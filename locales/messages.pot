@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-04 00:08+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../www/core.php:99
+#, php-format
+msgid "No version for object %s %d."
+msgstr ""
+
+#: ../www/core.php:134
+#, php-format
+msgid "Found older version of %s %d: %d instead of %d."
+msgstr ""
+
+#: ../www/core.php:178
+#, php-format
+msgid "Reading URL %s"
+msgstr ""
+
+#: ../www/core.php:180
+#, php-format
+msgid "Reading file %s"
+msgstr ""
+
+#: ../www/core.php:203 ../www/index.php:99 ../www/index.php:118
+#: ../www/index.php:145
+#, php-format
+msgid "Error preparing data: %s."
+msgstr ""
+
+#: ../www/core.php:215
+msgid "Nothing is modified, not going to update everything"
+msgstr ""
+
+#: ../www/core.php:218
+#, php-format
+msgid "%d object was modified, can update only %d of them (repeat for more)."
+msgid_plural ""
+"%d objects were modified, can update only %d of them (repeat for more)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../www/core.php:285
+#, php-format
+msgid "Duplicate ID for %s %d"
+msgstr ""
+
+#: ../www/core.php:291 ../www/level0l.php:124
+#, php-format
+msgid "Way %d has less than two nodes"
+msgstr ""
+
+#: ../www/core.php:293 ../www/level0l.php:126
+#, php-format
+msgid "Relation %d has no members"
+msgstr ""
+
+#: ../www/core.php:310
+#, php-format
+msgid "No base data for %s %d"
+msgstr ""
+
+#: ../www/index.php:48
+msgid "Yor are already logged in."
+msgstr ""
+
+#: ../www/index.php:64
+msgid "too big"
+msgstr ""
+
+#: ../www/index.php:64
+msgid "bigger than MAX_FILE_SIZE"
+msgstr ""
+
+#: ../www/index.php:64
+msgid "partial upload"
+msgstr ""
+
+#: ../www/index.php:65
+msgid "no file"
+msgstr ""
+
+#: ../www/index.php:65
+msgid "nowhere to store"
+msgstr ""
+
+#: ../www/index.php:65
+msgid "failed to write"
+msgstr ""
+
+#: ../www/index.php:65
+msgid "extension error"
+msgstr ""
+
+#: ../www/index.php:66
+#, php-format
+msgid "Error uploading file: %s."
+msgstr ""
+
+#: ../www/index.php:73
+msgid "Could not parse the URL."
+msgstr ""
+
+#: ../www/index.php:75
+msgid "Replace with what?"
+msgstr ""
+
+#: ../www/index.php:75
+msgid "Add what?"
+msgstr ""
+
+#: ../www/index.php:116
+msgid "There are severe validation errors, please fix them."
+msgstr ""
+
+#: ../www/index.php:120
+msgid "Nothing to upload."
+msgstr ""
+
+#: ../www/index.php:122
+msgid "Please enter changeset comment."
+msgstr ""
+
+#: ../www/level0l.php:19
+msgid ""
+"Conflict! Your edits to the old version are saved in this comment.\\nPlease "
+"make appropriate changes and remove '!' character from the entity header."
+msgstr ""
+
+#: ../www/level0l.php:65
+#, php-format
+msgid "Please resolve conflict of %s %d"
+msgstr ""
+
+#: ../www/level0l.php:70
+msgid "Deleting an unsaved object"
+msgstr ""
+
+#: ../www/level0l.php:79
+#, php-format
+msgid "Coordinates specified for %s %d"
+msgstr ""
+
+#: ../www/level0l.php:81
+msgid "Node without coordinates"
+msgstr ""
+
+#: ../www/level0l.php:90
+msgid "A node cannot have member objects"
+msgstr ""
+
+#: ../www/level0l.php:95
+msgid "Role name specified for a way node"
+msgstr ""
+
+#: ../www/level0l.php:97
+msgid "Ways cannot have members besides nodes"
+msgstr ""
+
+#: ../www/level0l.php:105
+msgid "Duplicated tag"
+msgstr ""
+
+#: ../www/level0l.php:107
+#, php-format
+msgid "Unknown content while parsing %s %d"
+msgstr ""
+
+#: ../www/level0l.php:109
+msgid "Unknown and unparsed content found"
+msgstr ""
+
+#: ../www/osmapi.php:69
+msgid "OAuth token was lost, please relogin."
+msgstr ""
+
+#: ../www/osmapi.php:89
+msgid "Could not aquire changeset id for a new changeset."
+msgstr ""
+
+#: ../www/osmapi.php:101
+#, php-format
+msgid "Changeset %d was uploaded successfully."
+msgstr ""
+
+#: ../www/osmapi.php:105
+#, php-format
+msgid "Conflict while uploading changeset %d: %s."
+msgstr ""
+
+#: ../www/osmapi.php:111
+#, php-format
+msgid "OAuth error %d at stage \"%s\": %s."
+msgstr ""
+
+#: ../www/page.php:4 ../www/page.php:12
+msgid "Level0 OpenStreetMap Editor"
+msgstr ""
+
+#: ../www/page.php:22
+msgid "URL or group of IDs like \"n54,w33\""
+msgstr ""
+
+#: ../www/page.php:23
+msgid "OSM or OSC file"
+msgstr ""
+
+#: ../www/page.php:24
+msgid "Add to editor"
+msgstr ""
+
+#: ../www/page.php:25
+msgid "Replace data in editor"
+msgstr ""
+
+#: ../www/page.php:26
+msgid "Revert changes"
+msgstr ""
+
+#: ../www/page.php:27
+msgid "Clear data"
+msgstr ""
+
+#: ../www/page.php:31
+#, php-format
+msgid "You're %s."
+msgstr ""
+
+#: ../www/page.php:31
+msgid "Log out"
+msgstr ""
+
+#: ../www/page.php:33
+msgid "Log in"
+msgstr ""
+
+#: ../www/page.php:35
+msgid "Download .osm"
+msgstr ""
+
+#: ../www/page.php:36
+msgid "Validate"
+msgstr ""
+
+#: ../www/page.php:37
+msgid "Check for conflicts"
+msgstr ""
+
+#: ../www/page.php:39
+msgid "Changeset comment"
+msgstr ""
+
+#: ../www/page.php:40
+msgid "Upload to OSM"
+msgstr ""
+
+#: ../www/page.php:49
+msgid "Edit this area"
+msgstr ""
+
+#: ../www/page.php:50
+msgid "Follow cursor"
+msgstr ""
+
+#: ../www/page.php:58
+#, php-format
+msgid "Line %d"
+msgstr ""
+
+#: ../www/page.php:61
+msgid ""
+"Useful links: <a href=\"http://wiki.openstreetmap.org/wiki/Level0\">about "
+"this editor</a>, <a href=\"http://wiki.openstreetmap.org/wiki/Level0L"
+"\">language reference</a>, <a href=\"http://wiki.openstreetmap.org/wiki/"
+"Map_Features\">tag reference</a>, <a href=\"http://taginfo.openstreetmap.org/"
+"\">tag statistics</a>."
+msgstr ""

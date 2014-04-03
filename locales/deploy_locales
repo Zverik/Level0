@@ -1,0 +1,9 @@
+#!/bin/sh
+LEVEL0_DOCROOT=../www
+
+for lang in *.mo
+do
+	MPATH=$LEVEL0_DOCROOT/locale/`basename $lang .mo`/LC_MESSAGES
+	mkdir -p $MPATH
+	cp $lang $MPATH/messages.mo
+done
