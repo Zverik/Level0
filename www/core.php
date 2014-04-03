@@ -135,7 +135,6 @@ function update_data( $data ) {
 			} else {
 				$basedata[$pk] = $res;
 				// userdata: if exists and modified, then conflict!
-				// todo: conflict only when data is different, otherwise update silently
 				$found = false;
 				for( $i = 0; $i < count($userdata); $i++ ) {
 					if( $userdata[$i]['type'] == $res['type'] && $userdata[$i]['id'] == $res['id'] ) {
