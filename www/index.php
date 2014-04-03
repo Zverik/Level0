@@ -3,7 +3,7 @@ require('config.php');
 require('osmapi.php');
 require('core.php');
 
-const GENERATOR = 'Level0 v0.9';
+const GENERATOR = 'Level0 v1.0';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
 ini_set('session.gc_maxlifetime', 7776000);
@@ -120,8 +120,6 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 		$error = _('Nothing to upload.');
 	elseif( !isset($_REQUEST['comment']) || strlen(trim($_REQUEST['comment'])) == 0 )
 		$error = _('Please enter changeset comment.');
-	elseif( true )
-		$error = 'Nope. Still disabled.';
 	else {
 		if( oauth_upload(trim($_REQUEST['comment']), $e) ) {
 			clear_data();
@@ -158,10 +156,6 @@ if( !$center && isset($_REQUEST['center']) && preg_match('/^-?\\d{1,2}(?:\\.\\d+
 $zoom = $center ? 17 : ($center_r ? 15 : 2);
 if( !$center )
 	$center = array(30, 0);
-
-if( !count($messages) )
-	$messages[] = 'This is a beta version, uploading is disabled.';
-//	$messages[] = 'This is a beta version, editing <a href="http://api06.dev.openstreetmap.org/">dev server</a> database.';
 
 require('page.php');
 ?>

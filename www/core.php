@@ -350,7 +350,7 @@ function revert() {
 		if( $userdata[$i]['id'] > 0 && isset($basedata[$pk])
 			&& $basedata[$pk]['complete'] && is_modified($userdata[$i]) ) {
 			$deleted = isset($userdata[$i]['action']) && $userdata[$i]['action'] == 'delete';
-			$userdata[$i] = $basedata[$pk];
+			$userdata[$i] = strip_version($basedata[$pk]);
 			if( $deleted )
 				$userdata[$i]['action'] = 'delete';
 		}

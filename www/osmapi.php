@@ -15,7 +15,7 @@ function oauth_login() {
 
 function oauth_logout() {
 	unset($_SESSION['osm_user']);
-	unset($_SESSION['osm_id']);
+	unset($_SESSION['osm_langs']);
 	unset($_SESSION['osm_token']);
 	unset($_SESSION['osm_secret']);
 }

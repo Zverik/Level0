@@ -115,7 +115,7 @@ document.getElementById('downarea').onclick = function() {
 
 var textarea = document.forms['f'].elements['data'],
 	headerRE = /^!?-?(node|way|relation)(?:\s+(-?\d+))?(?:\.\d+)?(?:\s*:\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?))?\s*(?:#.*)?$/,
-	nodeSetRE = /^(!?-?node\s+(-?\d+)\s*)(\s*:\s*)?(-?\d{1,2}(?:\.\d+)?\s*,\s*-?\d{1,3}(?:\.\d+)?)?(\s*#.*)?\s*$/,
+	nodeSetRE = /^(!?-?node(?:\s+(-?\d+))?\s*)(\s*:\s*)?(-?\d{1,2}(?:\.\d+)?\s*,\s*-?\d{1,3}(?:\.\d+)?)?(\s*#.*)?\s*$/,
 	ndRE = /^\s*nd\s+(-?\d+)\s*$/;
 
 function findNodeCoords( lines, id ) {
@@ -192,7 +192,7 @@ if( 'selectionStart' in textarea ) {
 				if( header[1] == 'node' ) {
 					m = nodeSetRE.exec(lines[headerRow]);
 					if( m ) {
-						lines[headerRow] = m[1] + (m[3] == '' ? ': ' : m[3]) + coords + (m[5] || '');
+						lines[headerRow] = m[1] + (m[3] ? m[3] : ': ') + coords + (m[5] || '');
 						var ss = textarea.selectionStart;
 						textarea.value = lines.join('\n');
 						textarea.setSelectionRange(ss, ss);
@@ -203,7 +203,7 @@ if( 'selectionStart' in textarea ) {
 						for( var i = 0; i < lines.length; i++ ) {
 							m = nodeSetRE.exec(lines[i]);
 							if( m && m[2] == nd[1] ) {
-								lines[i] = m[1] + (m[3] == '' ? ': ' : m[3]) + coords + (m[5] || '');
+								lines[i] = m[1] + (m[3] ? m[3] : ': ') + coords + (m[5] || '');
 								var ss = textarea.selectionStart;
 								textarea.value = lines.join('\n');
 								textarea.setSelectionRange(ss, ss);
