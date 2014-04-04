@@ -9,5 +9,5 @@ LEVEL0_LANGS=`curl https://www.transifex.com/api/2/project/level0/resource/messa
 for lang in $LEVEL0_LANGS
 do
 	echo "Processing language $lang"
-	curl https://www.transifex.com/api/2/project/level0/resource/messages/translation/ru --user 'Zverik:EldoSim5' -s|grep content|sed 's/^.\+": "\(.\+\)",\s*$/\1/'|sed 's/\\\\n/%NEWLINE%/g'|sed 's/\\n/\n/g'|sed 's/\\$//mg' |sed 's/%NEWLINE%/\\n/g' |sed 's/\\"/"/g'|sed 's/\\\\/\\/g'|msgfmt -o $lang.mo -
+	curl https://www.transifex.com/api/2/project/level0/resource/messages/translation/$lang --user "$TRANSIFEX_USER:$TRANSIFEX_PASS" -s|grep content|sed 's/^.\+": "\(.\+\)",\s*$/\1/'|sed 's/\\\\n/%NEWLINE%/g'|sed 's/\\n/\n/g'|sed 's/\\$//mg' |sed 's/%NEWLINE%/\\n/g' |sed 's/\\"/"/g'|sed 's/\\\\/\\/g'|msgfmt -o $lang.mo -
 done
