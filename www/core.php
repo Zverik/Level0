@@ -109,7 +109,7 @@ function update_data( $data ) {
 
 			// $res goes to basedata, $obj should be merged with userdata
 			$pk = $res['type'].$res['id'];
-			$version_diff = $res['version'] - $basedata[$pk]['version'];
+			$version_diff = $res['version'] - (isset($basedata[$pk]) ? $basedata[$pk]['version'] : 0);
 			if( !isset($basedata[$pk]) || !$version_diff ) {
 				if( !isset($basedata[$pk]) || !$basedata[$pk]['complete'] )
 					$basedata[$pk] = $res;
