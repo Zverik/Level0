@@ -3,6 +3,7 @@ require('config.php');
 require('osmapi.php');
 require('core.php');
 
+// Constants and session management
 const GENERATOR = 'Level0 v1.0';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
@@ -11,18 +12,32 @@ ini_set('session.cookie_lifetime', 7776000);
 session_set_cookie_params(7776000);
 session_start();
 
+// Determine the locale
 $directory = dirname(__FILE__).'/locale';
 if( isset($_REQUEST['lang']) && preg_match('/^[a-z]{2,3}[A-Z-_]*$/', $_REQUEST['lang']) )
 	$_SESSION['lang'] = $_REQUEST['lang'];
-$locale = isset($_SESSION['lang']) ? array($_SESSION['lang']) : (isset($_SESSION['osm_langs']) && is_array($_SESSION['osm_langs']) ? $_SESSION['osm_langs'] : array());
-if( !count($locale) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('/^[a-z_,;0-9=.-]+$/i', $_SERVER['HTTP_ACCEPT_LANGUAGE']) )
-	preg_replace('/;.+$/', '', explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+$locale = isset($_SESSION['lang']) ? array($_SESSION['lang']) : array();
+if( isset($_SESSION['osm_langs']) && is_array($_SESSION['osm_langs']) )
+	$locale = array_merge($locale, $_SESSION['osm_langs']);
+if( isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('/^[a-z_,;0-9=.-]+$/i', $_SERVER['HTTP_ACCEPT_LANGUAGE']) )
+	$locale = array_merge($locale, preg_replace('/;.+$/', '', explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])));
+$locale = preg_replace('/^([a-z]{2})-([A-Z]+)/', '$1_$2', $locale);
 $locale[] = 'en_US';
+
+// Expand two-letter locales to fully specified
+$default_locales = array('en_US', 'ru_RU', 'de_DE', 'ja_JP', 'it_IT', 'hr_HR', 'fr_FR');
+$loclist = array();
+foreach( $default_locales as $dl )
+	$loclist[] = '/^'.substr($dl, 0, 2).'$/';
+$locale = preg_replace($loclist, $default_locales, $locale);
+
+// Finally, setlocale
 setlocale(LC_MESSAGES, $locale);
 bindtextdomain(TEXT_DOMAIN, $directory);
 bind_textdomain_codeset(TEXT_DOMAIN, 'UTF-8');
 textdomain(TEXT_DOMAIN);
 
+// Generate an (reasonably) unique identifier for the session
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 if( !isset($_REQUEST['l0id']) && $action == 'remember' && isset($_SESSION['l0id']) ) {
 	$l0id = $_SESSION['l0id'];
@@ -32,17 +47,22 @@ if( !isset($_REQUEST['l0id']) && $action == 'remember' && isset($_SESSION['l0id'
 if( !isset($l0id) || strlen($l0id) == 0 )
 	$l0id = isset($_REQUEST['l0id']) && preg_match('/^\\d{1,10}$/', $_REQUEST['l0id']) ? $_REQUEST['l0id'] : mt_rand(1000, 9999999);
 
-$error = false;
-$messages = array();
+// Check logged in user
 $user = isset($_SESSION['osm_user']) ? $_SESSION['osm_user'] : false;
 $loggedin = isset($_SESSION['osm_token']);
+
+// Read edited data
 if( !isset($text) || !$text )
 	$text = isset($_REQUEST['data']) ? $_REQUEST['data'] : '';
 
-read_base();
+// Generate $basedata and $userdata arrays
+$error = false;
+$messages = array();
 $validation = array(); // of (severe?, line, description)
+read_base();
 parse_text($text);
 
+// Now process actions
 if( $action == 'login' || isset($_REQUEST['login']) ) {
 	if( $loggedin )
 		$error = _('Yor are already logged in.');
@@ -132,6 +152,7 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 	update_modified();
 }
 
+// This is for when DEBUG constant is true
 function print_debug() {
 	global $basedata, $userdata;
 	$e = prepare_export();
@@ -147,6 +168,7 @@ function print_debug() {
 	print_r($userdata);
 }
 
+// Restore map parameters
 $center = calculate_center();
 $center_r = false;
 if( !$center && isset($_REQUEST['center']) && preg_match('/^-?\\d{1,2}(?:\\.\\d+)?,-?\\d{1,3}(?:\\.\\d+)?$/', $_REQUEST['center']) ) {
