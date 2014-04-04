@@ -14,7 +14,7 @@ session_start();
 $directory = dirname(__FILE__).'/locale';
 if( isset($_REQUEST['lang']) && preg_match('/^[a-z]{2,3}[A-Z-_]*$/', $_REQUEST['lang']) )
 	$_SESSION['lang'] = $_REQUEST['lang'];
-$locale = isset($_SESSION['lang']) ? array($_SESSION['lang']) : (isset($_SESSION['langs']) && is_array($_SESSION['langs']) ? $_SESSION['langs'] : array());
+$locale = isset($_SESSION['lang']) ? array($_SESSION['lang']) : (isset($_SESSION['osm_langs']) && is_array($_SESSION['osm_langs']) ? $_SESSION['osm_langs'] : array());
 if( !count($locale) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && preg_match('/^[a-z_,;0-9=.-]+$/i', $_SERVER['HTTP_ACCEPT_LANGUAGE']) )
 	preg_replace('/;.+$/', '', explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
 $locale[] = 'en_US';
