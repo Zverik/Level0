@@ -28,7 +28,7 @@
 
 <p>
 <?php if( $loggedin ): ?>
-<?php if( $user ) echo sprintf(_("You're %s."), $user) ?><input type="submit" name="logout" value="<?=_('Log out') ?>">
+<?php if( $user ) echo sprintf(_("You're %s."), $user).' ' ?><input type="submit" name="logout" value="<?=_('Log out') ?>">
 <?php else: ?>
 <input type="submit" name="login" value="<?=_('Log in') ?>">
 <?php endif ?>

@@ -25,7 +25,7 @@ $locale = preg_replace('/^([a-z]{2})-([A-Z]+)/', '$1_$2', $locale);
 $locale[] = 'en_US';
 
 // Expand two-letter locales to fully specified
-$default_locales = array('en_US', 'ru_RU', 'de_DE', 'ja_JP', 'it_IT', 'hr_HR', 'fr_FR');
+$default_locales = array('en_US', 'ru_RU', 'de_DE', 'ja_JP', 'it_IT', 'hr_HR', 'fr_FR', 'uk_UA', 'vi_VN');
 $loclist = array();
 foreach( $default_locales as $dl )
 	$loclist[] = '/^'.substr($dl, 0, 2).'$/';
