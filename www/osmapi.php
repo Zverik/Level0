@@ -302,7 +302,7 @@ function url_to_api( $url ) {
 					if( $type == 'node' )
 						$urls[] = $u.'/ways';
 					$u .= '/relations';
-				} elseif( $type != 'node' && ($fullAll || count($m) < 4 || $m[4] != '!') ) // (count($m) > 4 && $m[4] == '!') )
+				} elseif( $type != 'node' && count($m) > 4 && $m[4] == '!' )
 					$u .= '/full';
 				$urls[] = $u;
 			}
