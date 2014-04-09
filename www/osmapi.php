@@ -267,7 +267,7 @@ function url_to_api( $url ) {
 	# API calls
 	if( preg_match('#/api/0.6/((?:node|way|relation|changeset)/\\d+(?:/[0-9a-z]+)?)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
-	if( preg_match('#/api/0.6/((nodes|ways|relations)?\2=\\d+.*)$#', $url, $m) )
+	if( preg_match('#/api/0.6/((nodes|ways|relations)\?\2=\\d+.*)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
 	if( preg_match('#/api/0.6/(map\?bbox=.*)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
