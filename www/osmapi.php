@@ -355,10 +355,10 @@ function create_osc( $data, $changeset = false ) {
 				$osc .= "      <nd ref='".$node."' />\n";
 		} elseif( $obj['type'] == 'relation' ) {
 			foreach( $obj['members'] as $member )
-				$osc .= "      <member type='".$member['type']."' ref='".$member['id']."' role='".$member['role']."' />\n";
+				$osc .= "      <member type='".$member['type']."' ref='".$member['id']."' role='".htmlspecialchars($member['role'], ENT_QUOTES)."' />\n";
 		}
 		foreach( $obj['tags'] as $k => $v ) {
-			$osc .= '      <tag k=\''.htmlspecialchars($k)."' v='".htmlspecialchars($v)."' />\n";
+			$osc .= '      <tag k=\''.htmlspecialchars($k, ENT_QUOTES)."' v='".htmlspecialchars($v, ENT_QUOTES)."' />\n";
 		}
 		$osc .= '    </'.$obj['type'].">\n";
 	}
