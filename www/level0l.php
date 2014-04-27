@@ -39,7 +39,7 @@ function data_to_l0l( $data ) {
 				$str .= '  nd '.$nd."\n";
 		if( $obj['type'] == 'relation' && count($obj['members']) > 0 )
 			foreach( $obj['members'] as $m )
-				$str .= sprintf("  %s %d%s\n", $m['type'] == 'node' ? 'nd' : ($m['type'] == 'way' ? 'wy' : 'rel'), $m['id'], strlen($m['role']) > 0 ? ' '.$m['role'] : '');
+				$str .= sprintf("  %s %s%s\n", $m['type'] == 'node' ? 'nd' : ($m['type'] == 'way' ? 'wy' : 'rel'), $m['id'], strlen($m['role']) > 0 ? ' '.$m['role'] : '');
 	}
 	return $str;
 }
