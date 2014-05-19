@@ -115,6 +115,7 @@ function oauth_upload( $comment, $data ) {
 }
 
 function parse_osm_xml( $uri ) {
+	global $messages;
 	$r = new XMLReader();
 	$r->open($uri, 'utf-8');
 	$result = array();
@@ -171,8 +172,13 @@ function parse_osm_xml( $uri ) {
 			} elseif( $r->name == 'tag' ) {
 				$key = $r->getAttribute('k');
 				$value = $r->getAttribute('v');
-				if( $key !== null && $value !== null && strlen(trim($key)) > 0 && strlen(trim($value)) > 0 ) {
-					$cur['tags'][trim($key)] = trim($value);
+				if( $key !== null && $value !== null ) {
+					$tkey = hard_trim($key);
+					$tvalue = hard_trim($value);
+					if( strlen($tkey) > 0 && strlen($tvalue) > 0 )
+						$cur['tags'][$tkey] = $tvalue;
+					if( !isset($cur['action']) && ($key !== $tkey || $value !== $tvalue) )
+						$cur['action'] = 'modify';
 				}
 			} elseif( $r->name == 'nd' ) {
 				$ref = $r->getAttribute('ref');
@@ -206,9 +212,17 @@ function parse_osm_xml( $uri ) {
 				$cur = array();
 			}
 		}
+		if( count($result) == MAX_REQUEST_OBJECTS ) {
+			$messages[] = sprintf(_('Download is incomplete, maximum of %d objects has been reached'), MAX_REQUEST_OBJECTS);
+			break;
+		}
 	}
 	$r->close();
 	return renumber_created($result);
+}
+
+function hard_trim( $str ) {
+	return str_replace("\0", '', str_replace("\t", ' ', str_replace("\n", ' ', str_replace("\r", '', trim($str)))));
 }
 
 function is_pint( $str, $positive = false ) {
@@ -271,10 +285,14 @@ function url_to_api( $url ) {
 		return OSM_API_URL.$m[1];
 	if( preg_match('#/api/0.6/(map\?bbox=.*)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
-	if( preg_match('#\.org/((?:node|way|relation)/\\d+)(?:/[a-z]+)?$#', $url, $m) )
+	if( preg_match('!\.org/((?:node|way|relation)/\\d+)(?:/[a-z]+)?(?:#.*)?$!', $url, $m) )
 		return OSM_API_URL.$m[1];
-	if( preg_match('#\.org/(changeset/\\d+)$#', $url, $m) )
+	if( preg_match('!\.org/(changeset/\\d+)(?:#.*)?$!', $url, $m) )
 		return OSM_API_URL.$m[1].'/download';
+
+	# Overpass API
+	if( preg_match('!(?:overpass\.osm\.rambler\.ru/cgi|overpass-api\.de/api|api\.openstreetmap\.fr/oapi)/interpreter\?data=.+$!', $url, $m) )
+		return 'http://'.$m[0];
 
 	# List of objects
 	if( preg_match('#^!?\\s*[a-y]+[/\\s]*[0-9.]+[!*]?(?:\\s*,\\s*[a-y]+[/\\s]*[0-9.]+[!*]?)*$#', $url) ) {

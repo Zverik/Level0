@@ -4,7 +4,7 @@ require('osmapi.php');
 require('core.php');
 
 // Constants and session management
-const GENERATOR = 'Level0 v1.0';
+const GENERATOR = 'Level0 v1.1';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
 ini_set('session.gc_maxlifetime', 7776000);
@@ -152,20 +152,14 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 	update_modified();
 }
 
-// This is for when DEBUG constant is true
-function print_debug() {
+// Now osmChange should be ready at all times, not just in debug mode
+function print_osmChange() {
 	global $basedata, $userdata;
 	$e = prepare_export();
 	if( is_array($e) ) {
 		echo htmlspecialchars(create_osc($e, 1234));
-//		echo "\n\n";
-//		echo htmlspecialchars(create_osm($e));
 	} else
 		echo htmlspecialchars(sprintf(_('Error preparing data: %s.'), $e));
-	echo "\n\n\$basedata = ";
-	print_r($basedata);
-	echo "\n\$userdata = ";
-	print_r($userdata);
 }
 
 // Restore map parameters

@@ -96,7 +96,7 @@ function update_data( $data ) {
 			$added[] = $objnv;
 		} else { // modify, delete or base
 			if( !isset($obj['version']) ) {
-				$messages[] = sprintf(_('No version for object %s %d.'), $obj['type'], $obj['id']);
+				$messages[] = sprintf(_('No version for object %s %s.'), $obj['type'], $obj['id']);
 				continue;
 			}
 			if( isset($obj['action']) && strlen($obj['action']) > 0 ) {
@@ -131,7 +131,7 @@ function update_data( $data ) {
 				}
 			} elseif( $version_diff < 0 ) {
 				// it's really old, skip it
-				$messages[] = sprintf(_('Found older version of %s %d: %d instead of %d.'), $res['type'], $res['id'], $res['version'], $basedata[$pk]['version']);
+				$messages[] = sprintf(_('Found older version of %s %s: %d instead of %d.'), $res['type'], $res['id'], $res['version'], $basedata[$pk]['version']);
 			} else {
 				$basedata[$pk] = $res;
 				// userdata: if exists and modified, then conflict!
@@ -281,7 +281,7 @@ function prepare_export() {
 		$pk = $obj['type'].$obj['id'];
 		if( $obj['id'] < 0 ) {
 			if( isset($cversions[$pk]) )
-				return sprintf(_('Duplicate ID for %s %d'), $obj['type'], $obj['id']);
+				return sprintf(_('Duplicate ID for %s %s'), $obj['type'], $obj['id']);
 			$cversions[$pk] = true;
 		}
 		if( $obj['id'] <= 0 || (isset($obj['action']) && $obj['action'] != 'delete') ) {
@@ -306,7 +306,7 @@ function prepare_export() {
 			$result[] = $obj;
 		} else {
 			if( !isset($basedata[$pk]) )
-				return sprintf(_('No base data for %s %d'), $obj['type'], $obj['id']);
+				return sprintf(_('No base data for %s %s'), $obj['type'], $obj['id']);
 			$base = $basedata[$pk];
 			if( !isset($obj['version']) )
 				$obj['version'] = $base['version'];

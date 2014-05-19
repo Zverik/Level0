@@ -13,7 +13,13 @@
 <?php if( $error ): ?>
 <p style="color: red;"><?=htmlspecialchars($error) ?></p>
 <?php endif ?>
-<p><?php foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; } ?></p>
+<p><?php
+if( count($messages) > 10 ) {
+	$cnt6 = count($messages) - 8;
+	array_splice($messages, 4, $cnt6, sprintf(ngettext('...(%d message skipped)...', '...(%d messages skipped)...', $cnt6), $cnt6));
+}
+foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
+?></p>
 
 <form action="<?=$php_self ?>" method="post" name="f" enctype="multipart/form-data">
 <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
@@ -35,6 +41,7 @@
 <input type="submit" name="download" value="<?=_('Download .osm') ?>">
 <input type="submit" name="save" value="<?=_('Validate') ?>">
 <input type="submit" name="check" value="<?=_('Check for conflicts') ?>">
+<input type="button" name="showosc" value="<?=_('Show osmChange') ?>" onclick="javascript: var osc = document.getElementById('osmchange'); osc.style.display = 'block'; osc.scrollIntoView();">
 <?php if( $loggedin ): ?>
 <br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60">
 <input type="submit" name="upload" value="<?=_('Upload to OSM') ?>">
@@ -63,12 +70,23 @@
 '<a href="http://wiki.openstreetmap.org/wiki/Map_Features">tag reference</a>, '.
 '<a href="http://taginfo.openstreetmap.org/">tag statistics</a>.') ?></p>
 
+<div id="osmchange" style="display: none;">
+<h2><?=_('OsmChange contents (this will be uploaded to the server)') ?></h2>
+<pre>
+<?php print_osmChange() ?>
+</pre>
 <?php if( DEBUG ): ?>
-<h2 style="cursor: pointer;" onclick="document.getElementById('debug').style.display='block';">Debug</h2>
-<pre id="debug" style="display: none;">
-<?php print_debug() ?>
+<h2><?=_('Debug') ?></h2>
+<pre>
+<?php
+	echo "\$basedata = ";
+	print_r($basedata);
+	echo "\n\$userdata = ";
+	print_r($userdata);
+?>
 </pre>
 <?php endif ?>
+</div>
 
 <script type="text/javascript">
 //<!--
@@ -143,7 +161,15 @@ if( 'selectionStart' in textarea ) {
 					if( header[3] !== '' && header[4] !== '' )
 						setCenter([+header[3], +header[4]]);
 				} else if( header[1] == 'way' ) {
-					var nd = ndRE.exec(lines[row]);
+					var nodeRow = row, nd;
+					while( nodeRow < lines.length && !headerRE.test(lines[nodeRow]) ) {
+						nd = ndRE.exec(lines[nodeRow]);
+						if( nd !== null )
+							break;
+						else
+							nd = null;
+						nodeRow++;
+					}
 					if( nd !== null ) {
 						// find relevant node coords and put marker
 						var coords = findNodeCoords(lines, nd[1]);

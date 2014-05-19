@@ -62,7 +62,7 @@ function l0l_to_data( $str ) {
 			}
 			$cur = array('type' => $m[3], 'id' => (count($m) > 4 && strlen($m[4]) > 0 ? $m[4] : 0));
 			if( $m[1] === '!' )
-				$validation[] = array(true, $ln, sprintf(_('Please resolve conflict of %s %d'), $cur['type'], $cur['id']));
+				$validation[] = array(true, $ln, sprintf(_('Please resolve conflict of %s %s'), $cur['type'], $cur['id']));
 			if( $m[2] === '-' ) {
 				if( $cur['id'] > 0 )
 					$cur['action'] = 'delete';
@@ -99,12 +99,21 @@ function l0l_to_data( $str ) {
 					$cur['members'][] = array('type' => ($m[1] == 'nd' ? 'node' : ($m[1] == 'wy' ? 'way' : 'relation')), 'id' => $m[2], 'role' => (count($m) > 3 ? $m[3] : ''));
 				}
 			} elseif( preg_match('/^\\s*([^=]*?(?:\\\\=[^=]*?)*)\\s*=\\s*(.+?)\\s*$/', $line, $m) ) {
-				if( !isset($cur['tags'][$m[1]]) )
-					$cur['tags'][$m[1]] = $m[2];
-				else
-					$validation[] = array(true, $ln, _('Duplicated tag'));
+				// regular expression is unreliable, find equals sign by hand
+				$eq = 1;
+				while( $eq < strlen($line) && (substr($line, $eq, 1) != '=' || substr($line, $eq-1, 1) == '\\') )
+					$eq++;
+				if( $eq < strlen($line) ) {
+					$key = str_replace('\\=', '=', trim(substr($line, 0, $eq)));
+					$value = trim(substr($line, $eq+1));
+					if( !isset($cur['tags'][$key]) )
+						$cur['tags'][$key] = $value;
+					else
+						$validation[] = array(true, $ln, _('Duplicated tag'));
+				} else
+					$validation[] = array(false, $ln, sprintf(_('Unknown content while parsing %s %s'), $cur['type'], $cur['id']));
 			} else
-				$validation[] = array(false, $ln, sprintf(_('Unknown content while parsing %s %d'), $cur['type'], $cur['id']));
+				$validation[] = array(false, $ln, sprintf(_('Unknown content while parsing %s %s'), $cur['type'], $cur['id']));
 		} else
 			$validation[] = array(false, $ln, _('Unknown and unparsed content found'));
 	}
