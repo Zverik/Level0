@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-04 00:08+0400\n"
+"POT-Creation-Date: 2014-05-20 00:54+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,35 +20,35 @@ msgstr ""
 
 #: ../www/core.php:99
 #, php-format
-msgid "No version for object %s %d."
+msgid "No version for object %s %s."
 msgstr ""
 
 #: ../www/core.php:134
 #, php-format
-msgid "Found older version of %s %d: %d instead of %d."
+msgid "Found older version of %s %s: %d instead of %d."
 msgstr ""
 
-#: ../www/core.php:178
+#: ../www/core.php:177
 #, php-format
 msgid "Reading URL %s"
 msgstr ""
 
-#: ../www/core.php:180
+#: ../www/core.php:179
 #, php-format
 msgid "Reading file %s"
 msgstr ""
 
-#: ../www/core.php:203 ../www/index.php:99 ../www/index.php:118
-#: ../www/index.php:145
+#: ../www/core.php:202 ../www/index.php:119 ../www/index.php:138
+#: ../www/index.php:162
 #, php-format
 msgid "Error preparing data: %s."
 msgstr ""
 
-#: ../www/core.php:215
+#: ../www/core.php:214
 msgid "Nothing is modified, not going to update everything"
 msgstr ""
 
-#: ../www/core.php:218
+#: ../www/core.php:217
 #, php-format
 msgid "%d object was modified, can update only %d of them (repeat for more)."
 msgid_plural ""
@@ -56,84 +56,84 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../www/core.php:285
+#: ../www/core.php:284
 #, php-format
-msgid "Duplicate ID for %s %d"
+msgid "Duplicate ID for %s %s"
 msgstr ""
 
-#: ../www/core.php:291 ../www/level0l.php:124
+#: ../www/core.php:290 ../www/level0l.php:133
 #, php-format
 msgid "Way %d has less than two nodes"
 msgstr ""
 
-#: ../www/core.php:293 ../www/level0l.php:126
+#: ../www/core.php:292 ../www/level0l.php:135
 #, php-format
 msgid "Relation %d has no members"
 msgstr ""
 
-#: ../www/core.php:310
+#: ../www/core.php:309
 #, php-format
-msgid "No base data for %s %d"
+msgid "No base data for %s %s"
 msgstr ""
 
-#: ../www/index.php:48
+#: ../www/index.php:68
 msgid "Yor are already logged in."
 msgstr ""
 
-#: ../www/index.php:64
+#: ../www/index.php:84
 msgid "too big"
 msgstr ""
 
-#: ../www/index.php:64
+#: ../www/index.php:84
 msgid "bigger than MAX_FILE_SIZE"
 msgstr ""
 
-#: ../www/index.php:64
+#: ../www/index.php:84
 msgid "partial upload"
 msgstr ""
 
-#: ../www/index.php:65
+#: ../www/index.php:85
 msgid "no file"
 msgstr ""
 
-#: ../www/index.php:65
+#: ../www/index.php:85
 msgid "nowhere to store"
 msgstr ""
 
-#: ../www/index.php:65
+#: ../www/index.php:85
 msgid "failed to write"
 msgstr ""
 
-#: ../www/index.php:65
+#: ../www/index.php:85
 msgid "extension error"
 msgstr ""
 
-#: ../www/index.php:66
+#: ../www/index.php:86
 #, php-format
 msgid "Error uploading file: %s."
 msgstr ""
 
-#: ../www/index.php:73
+#: ../www/index.php:93
 msgid "Could not parse the URL."
 msgstr ""
 
-#: ../www/index.php:75
+#: ../www/index.php:95
 msgid "Replace with what?"
 msgstr ""
 
-#: ../www/index.php:75
+#: ../www/index.php:95
 msgid "Add what?"
 msgstr ""
 
-#: ../www/index.php:116
+#: ../www/index.php:136
 msgid "There are severe validation errors, please fix them."
 msgstr ""
 
-#: ../www/index.php:120
+#: ../www/index.php:140
 msgid "Nothing to upload."
 msgstr ""
 
-#: ../www/index.php:122
+#: ../www/index.php:142
 msgid "Please enter changeset comment."
 msgstr ""
 
@@ -145,7 +145,7 @@ msgstr ""
 
 #: ../www/level0l.php:65
 #, php-format
-msgid "Please resolve conflict of %s %d"
+msgid "Please resolve conflict of %s %s"
 msgstr ""
 
 #: ../www/level0l.php:70
@@ -173,16 +173,16 @@ msgstr ""
 msgid "Ways cannot have members besides nodes"
 msgstr ""
 
-#: ../www/level0l.php:105
+#: ../www/level0l.php:112
 msgid "Duplicated tag"
 msgstr ""
 
-#: ../www/level0l.php:107
+#: ../www/level0l.php:114 ../www/level0l.php:116
 #, php-format
-msgid "Unknown content while parsing %s %d"
+msgid "Unknown content while parsing %s %s"
 msgstr ""
 
-#: ../www/level0l.php:109
+#: ../www/level0l.php:118
 msgid "Unknown and unparsed content found"
 msgstr ""
 
@@ -209,85 +209,109 @@ msgstr ""
 msgid "OAuth error %d at stage \"%s\": %s."
 msgstr ""
 
+#: ../www/osmapi.php:216
+#, php-format
+msgid "Download is incomplete, maximum of %d objects has been reached"
+msgstr ""
+
 #: ../www/page.php:4 ../www/page.php:12
 msgid "Level0 OpenStreetMap Editor"
 msgstr ""
 
-#: ../www/page.php:22
+#: ../www/page.php:19
+#, php-format
+msgid "...(%d message skipped)..."
+msgid_plural "...(%d messages skipped)..."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../www/page.php:28
 msgid "URL or group of IDs like \"n54,w33\""
 msgstr ""
 
-#: ../www/page.php:23
+#: ../www/page.php:29
 msgid "OSM or OSC file"
 msgstr ""
 
-#: ../www/page.php:24
+#: ../www/page.php:30
 msgid "Add to editor"
 msgstr ""
 
-#: ../www/page.php:25
+#: ../www/page.php:31
 msgid "Replace data in editor"
 msgstr ""
 
-#: ../www/page.php:26
+#: ../www/page.php:32
 msgid "Revert changes"
 msgstr ""
 
-#: ../www/page.php:27
+#: ../www/page.php:33
 msgid "Clear data"
 msgstr ""
 
-#: ../www/page.php:31
+#: ../www/page.php:37
 #, php-format
 msgid "You're %s."
 msgstr ""
 
-#: ../www/page.php:31
+#: ../www/page.php:37
 msgid "Log out"
 msgstr ""
 
-#: ../www/page.php:33
+#: ../www/page.php:39
 msgid "Log in"
 msgstr ""
 
-#: ../www/page.php:35
+#: ../www/page.php:41
 msgid "Download .osm"
 msgstr ""
 
-#: ../www/page.php:36
+#: ../www/page.php:42
 msgid "Validate"
 msgstr ""
 
-#: ../www/page.php:37
+#: ../www/page.php:43
 msgid "Check for conflicts"
 msgstr ""
 
-#: ../www/page.php:39
+#: ../www/page.php:44
+msgid "Show osmChange"
+msgstr ""
+
+#: ../www/page.php:46
 msgid "Changeset comment"
 msgstr ""
 
-#: ../www/page.php:40
+#: ../www/page.php:47
 msgid "Upload to OSM"
 msgstr ""
 
-#: ../www/page.php:49
+#: ../www/page.php:56
 msgid "Edit this area"
 msgstr ""
 
-#: ../www/page.php:50
+#: ../www/page.php:57
 msgid "Follow cursor"
 msgstr ""
 
-#: ../www/page.php:58
+#: ../www/page.php:65
 #, php-format
 msgid "Line %d"
 msgstr ""
 
-#: ../www/page.php:61
+#: ../www/page.php:68
 msgid ""
 "Useful links: <a href=\"http://wiki.openstreetmap.org/wiki/Level0\">about "
 "this editor</a>, <a href=\"http://wiki.openstreetmap.org/wiki/Level0L"
 "\">language reference</a>, <a href=\"http://wiki.openstreetmap.org/wiki/"
 "Map_Features\">tag reference</a>, <a href=\"http://taginfo.openstreetmap.org/"
 "\">tag statistics</a>."
+msgstr ""
+
+#: ../www/page.php:74
+msgid "OsmChange contents (this will be uploaded to the server)"
+msgstr ""
+
+#: ../www/page.php:79
+msgid "Debug"
 msgstr ""
