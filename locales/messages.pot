@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-20 00:54+0400\n"
+"POT-Creation-Date: 2014-05-20 09:56+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,37 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../www/core.php:99
+#: ../www/core.php:104 ../www/level0l.php:75
+msgid "There can be only one changeset metadata"
+msgstr ""
+
+#: ../www/core.php:116
 #, php-format
 msgid "No version for object %s %s."
 msgstr ""
 
-#: ../www/core.php:134
+#: ../www/core.php:151
 #, php-format
 msgid "Found older version of %s %s: %d instead of %d."
 msgstr ""
 
-#: ../www/core.php:177
+#: ../www/core.php:194
 #, php-format
 msgid "Reading URL %s"
 msgstr ""
 
-#: ../www/core.php:179
+#: ../www/core.php:196
 #, php-format
 msgid "Reading file %s"
 msgstr ""
 
-#: ../www/core.php:202 ../www/index.php:119 ../www/index.php:138
-#: ../www/index.php:162
+#: ../www/core.php:219 ../www/index.php:119 ../www/index.php:140
+#: ../www/index.php:164
 #, php-format
 msgid "Error preparing data: %s."
 msgstr ""
 
-#: ../www/core.php:214
+#: ../www/core.php:231
 msgid "Nothing is modified, not going to update everything"
 msgstr ""
 
-#: ../www/core.php:217
+#: ../www/core.php:234
 #, php-format
 msgid "%d object was modified, can update only %d of them (repeat for more)."
 msgid_plural ""
@@ -56,22 +60,22 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../www/core.php:284
+#: ../www/core.php:301
 #, php-format
 msgid "Duplicate ID for %s %s"
 msgstr ""
 
-#: ../www/core.php:290 ../www/level0l.php:133
+#: ../www/core.php:307 ../www/level0l.php:140
 #, php-format
 msgid "Way %d has less than two nodes"
 msgstr ""
 
-#: ../www/core.php:292 ../www/level0l.php:135
+#: ../www/core.php:309 ../www/level0l.php:142
 #, php-format
 msgid "Relation %d has no members"
 msgstr ""
 
-#: ../www/core.php:309
+#: ../www/core.php:328
 #, php-format
 msgid "No base data for %s %s"
 msgstr ""
@@ -125,15 +129,15 @@ msgstr ""
 msgid "Add what?"
 msgstr ""
 
-#: ../www/index.php:136
+#: ../www/index.php:138
 msgid "There are severe validation errors, please fix them."
 msgstr ""
 
-#: ../www/index.php:140
+#: ../www/index.php:142
 msgid "Nothing to upload."
 msgstr ""
 
-#: ../www/index.php:142
+#: ../www/index.php:144
 msgid "Please enter changeset comment."
 msgstr ""
 
@@ -143,46 +147,46 @@ msgid ""
 "make appropriate changes and remove '!' character from the entity header."
 msgstr ""
 
-#: ../www/level0l.php:65
+#: ../www/level0l.php:66
 #, php-format
 msgid "Please resolve conflict of %s %s"
 msgstr ""
 
-#: ../www/level0l.php:70
+#: ../www/level0l.php:71
 msgid "Deleting an unsaved object"
 msgstr ""
 
-#: ../www/level0l.php:79
+#: ../www/level0l.php:86
 #, php-format
 msgid "Coordinates specified for %s %d"
 msgstr ""
 
-#: ../www/level0l.php:81
+#: ../www/level0l.php:88
 msgid "Node without coordinates"
 msgstr ""
 
-#: ../www/level0l.php:90
+#: ../www/level0l.php:97
 msgid "A node cannot have member objects"
 msgstr ""
 
-#: ../www/level0l.php:95
+#: ../www/level0l.php:102
 msgid "Role name specified for a way node"
 msgstr ""
 
-#: ../www/level0l.php:97
+#: ../www/level0l.php:104
 msgid "Ways cannot have members besides nodes"
 msgstr ""
 
-#: ../www/level0l.php:112
+#: ../www/level0l.php:119
 msgid "Duplicated tag"
 msgstr ""
 
-#: ../www/level0l.php:114 ../www/level0l.php:116
+#: ../www/level0l.php:121 ../www/level0l.php:123
 #, php-format
 msgid "Unknown content while parsing %s %s"
 msgstr ""
 
-#: ../www/level0l.php:118
+#: ../www/level0l.php:125
 msgid "Unknown and unparsed content found"
 msgstr ""
 
@@ -190,26 +194,30 @@ msgstr ""
 msgid "OAuth token was lost, please relogin."
 msgstr ""
 
-#: ../www/osmapi.php:89
+#: ../www/osmapi.php:85
 msgid "Could not aquire changeset id for a new changeset."
 msgstr ""
 
-#: ../www/osmapi.php:101
+#: ../www/osmapi.php:97
 #, php-format
 msgid "Changeset %d was uploaded successfully."
 msgstr ""
 
-#: ../www/osmapi.php:105
+#: ../www/osmapi.php:101
 #, php-format
 msgid "Conflict while uploading changeset %d: %s."
 msgstr ""
 
-#: ../www/osmapi.php:111
+#: ../www/osmapi.php:107
 #, php-format
 msgid "OAuth error %d at stage \"%s\": %s."
 msgstr ""
 
-#: ../www/osmapi.php:216
+#: ../www/osmapi.php:139
+msgid "Failed to open XML stream"
+msgstr ""
+
+#: ../www/osmapi.php:237
 #, php-format
 msgid "Download is incomplete, maximum of %d objects has been reached"
 msgstr ""
