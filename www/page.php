@@ -41,7 +41,7 @@ foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
 <input type="submit" name="download" value="<?=_('Download .osm') ?>">
 <input type="submit" name="save" value="<?=_('Validate') ?>">
 <input type="submit" name="check" value="<?=_('Check for conflicts') ?>">
-<input type="button" name="showosc" value="<?=_('Show osmChange') ?>" onclick="javascript: var osc = document.getElementById('osmchange'); osc.style.display = 'block'; osc.scrollIntoView();">
+<input type="submit" name="showosc" value="<?=_('Show osmChange') ?>">
 <?php if( $loggedin ): ?>
 <br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60">
 <input type="submit" name="upload" value="<?=_('Upload to OSM') ?>">
@@ -70,10 +70,10 @@ foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
 '<a href="http://wiki.openstreetmap.org/wiki/Map_Features">tag reference</a>, '.
 '<a href="http://taginfo.openstreetmap.org/">tag statistics</a>.') ?></p>
 
-<div id="osmchange" style="display: none;">
-<h2><?=_('OsmChange contents (this will be uploaded to the server)') ?></h2>
+<?php if( strlen($osccontent) > 0 ): ?>
+<h2 id="osmchange"><?=_('OsmChange contents (this will be uploaded to the server)') ?></h2>
 <pre>
-<?php print_osmChange() ?>
+<?php echo htmlspecialchars($osccontent) ?>
 </pre>
 <?php if( DEBUG ): ?>
 <h2><?=_('Debug') ?></h2>
@@ -87,9 +87,13 @@ foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
 </pre>
 <?php endif ?>
 </div>
+<?php endif ?>
 
 <script type="text/javascript">
 //<!--
+if( document.getElementById('osmchange') )
+	document.getElementById('osmchange').scrollIntoView();
+
 var map = L.map('map').setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
 L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
 	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>' }).addTo(map);

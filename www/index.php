@@ -154,14 +154,13 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 	update_modified();
 }
 
-// Now osmChange should be ready at all times, not just in debug mode
-function print_osmChange() {
-	global $basedata, $userdata;
+$osccontent = '';
+if( isset($_REQUEST['showosc']) && strlen($_REQUEST['showosc']) > 0 ) {
 	$e = prepare_export();
 	if( is_array($e) ) {
-		echo htmlspecialchars(create_osc($e, 1234));
+		$osccontent = create_osc($e, 1234);
 	} else
-		echo htmlspecialchars(sprintf(_('Error preparing data: %s.'), $e));
+		$osccontent = sprintf(_('Error preparing data: %s.'), $e);
 }
 
 // Restore map parameters
