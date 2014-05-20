@@ -76,11 +76,7 @@ function oauth_upload( $comment, $data ) {
 		$oauth = new OAuth(CLIENT_ID, CLIENT_SECRET, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
 		$oauth->setToken($_SESSION['osm_token'], $_SESSION['osm_secret']);
 
-		$change_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<osm>\n  <changeset>\n";
-		$change_data .= '    <tag k="created_by" v="'.GENERATOR."\" />\n";
-		$change_data .= '    <tag k="comment" v="'.htmlspecialchars($comment)."\" />\n";
-		$change_data .= "  </changeset>\n</osm>";
-
+		$change_data = create_changeset($data, $comment);
 		$xml_content = array('Content-Type' => 'application/xml');
 		$stage = 'create';
 		// note: this call works instead of returning 401 because of $xml_content
@@ -114,10 +110,35 @@ function oauth_upload( $comment, $data ) {
 	return false;
 }
 
+function create_changeset( $data, $comment ) {
+	foreach( $data as $obj ) {
+		if( $obj['type'] == 'changeset' && $obj['id'] <= 0 ) {
+			$chdata = $obj;
+			break;
+		}
+	}
+	if( !isset($chdata) ) {
+		$chdata = array('tags' => array());
+	}
+	if( strlen($comment) > 0 )
+		$chdata['tags']['comment'] = $comment;
+	$chdata['tags']['created_by'] = GENERATOR;
+
+	$change_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<osm>\n  <changeset>\n";
+	foreach( $chdata['tags'] as $k => $v ) {
+		$change_data .= '    <tag k=\''.htmlspecialchars($k, ENT_QUOTES)."' v='".htmlspecialchars($v, ENT_QUOTES)."' />\n";
+	}
+	$change_data .= "  </changeset>\n</osm>";
+	return $change_data;
+}
+
 function parse_osm_xml( $uri ) {
 	global $messages;
 	$r = new XMLReader();
-	$r->open($uri, 'utf-8');
+	if( !$r->open($uri, 'utf-8') ) {
+		$messages[] = _('Failed to open XML stream');
+		return;
+	}
 	$result = array();
 	$mode = false;
 	$cur = array();
@@ -125,7 +146,7 @@ function parse_osm_xml( $uri ) {
 		if( $r->nodeType == XMLReader::ELEMENT ) {
 			if( $r->name == 'modify' || $r->name == 'create' || $r->name == 'delete' ) {
 				$mode = $r->name;
-			} elseif( $r->name == 'node' || $r->name == 'way' || $r->name == 'relation' ) {
+			} elseif( $r->name == 'node' || $r->name == 'way' || $r->name == 'relation' || $r->name == 'changeset' ) {
 				$id = $r->getAttribute('id');
 				if( $id === null )
 					$id = 0;
@@ -353,7 +374,7 @@ function create_osc( $data, $changeset = false ) {
 	$osc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<osmChange version=\"0.6\" generator=\"".GENERATOR."\">\n";
 	$lastmode = '';
 	foreach( $data as $obj ) {
-		if( !isset($obj['action']) )
+		if( !isset($obj['action']) || $obj['type'] == 'changeset' )
 			continue;
 		if( $obj['action'] != $lastmode ) {
 			if( $lastmode )
@@ -389,6 +410,8 @@ function create_osm( $data ) {
 	$now = gmdate(DATE_ISO8601);
 	$osm = "<?xml version='1.0' encoding='UTF-8'?>\n<osm version='0.6' upload='true' generator='".GENERATOR."'>\n";
 	foreach( $data as $obj ) {
+		if( $obj['type'] == 'changeset' )
+			continue;
 		$osm .= '  <'.$obj['type']." id='".$obj['id']."' version='".$obj['version']."'";
 		if( $obj['type'] == 'node' && isset($obj['lat']) && isset($obj['lon']) )
 			$osm .= " lat='".$obj['lat']."' lon='".$obj['lon']."'";

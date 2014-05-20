@@ -14,7 +14,7 @@ const OSM_API_URL	= 'http://api.openstreetmap.org/api/0.6/';
 
 // Other settings
 const BBOX_RADIUS	= 0.0003; // for downloading around a point
-const MAX_REQUEST_OBJECTS = 300;
+const MAX_REQUEST_OBJECTS = 500;
 const DATA_DIR = 'data';
 const TEXT_DOMAIN = 'messages';
 

@@ -124,11 +124,13 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 		if( $v[0] )
 			$severe = true;
 	$empty_ = true;
+	$chcfound = false;
 	if( is_array($e) ) {
 		foreach( $e as $obj ) {
+			if( $obj['type'] == 'changeset' && $obj['id'] <= 0 && isset($obj['tags']['comment']) && strlen($obj['tags']['comment']) > 0 )
+				$chcfound = true;
 			if( isset($obj['action']) ) {
 				$empty_ = false;
-				break;
 			}
 		}
 	}
@@ -138,10 +140,10 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 		$error = sprintf(_('Error preparing data: %s.'), $e);
 	elseif( $empty_ )
 		$error = _('Nothing to upload.');
-	elseif( !isset($_REQUEST['comment']) || strlen(trim($_REQUEST['comment'])) == 0 )
+	elseif( !$chcfound && (!isset($_REQUEST['comment']) || strlen(trim($_REQUEST['comment'])) == 0) )
 		$error = _('Please enter changeset comment.');
 	else {
-		if( oauth_upload(trim($_REQUEST['comment']), $e) ) {
+		if( oauth_upload(trim(isset($_REQUEST['comment']) ? $_REQUEST['comment'] : ''), $e) ) {
 			clear_data();
 			$text = '';
 			$validation = array();

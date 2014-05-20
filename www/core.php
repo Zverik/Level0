@@ -90,7 +90,24 @@ function update_data( $data ) {
 
 	foreach( $data as $obj ) {
 		$objnv = strip_version($obj);
-		if( $obj['id'] <= 0 || (isset($obj['action']) && $obj['action'] == 'create') ) {
+		if( $obj['type'] == 'changeset' ) {
+			// check that created changeset metadata is not duplicated
+			if( $obj['id'] > 0 ) {
+				$found = false;
+				foreach( $userdata as $obj ) {
+					if( $obj['type'] == 'changeset' && $obj['id'] <= 0 ) {
+						$found = true;
+						break;
+					}
+				}
+				if( $found ) {
+					$messages[] = _('There can be only one changeset metadata').'.';
+					continue;
+				}
+			}
+			$userdata[] = $objnv;
+			$added[] = $objnv;
+		} elseif( $obj['id'] <= 0 || (isset($obj['action']) && $obj['action'] == 'create') ) {
 			// created objects go straight to userdata
 			$userdata[] = $objnv;
 			$added[] = $objnv;
@@ -295,7 +312,9 @@ function prepare_export() {
 	$nid = -1;
 	foreach( $userdata as $obj ) {
 		$pk = $obj['type'].$obj['id'];
-		if( $obj['id'] <= 0 ) {
+		if( $obj['type'] == 'changeset' && $obj['id'] <= 0 )
+			$result[] = $obj;
+		else if( $obj['id'] <= 0 ) {
 			if( $obj['id'] == 0 ) {
 				while( isset($cversions[$nid]) )
 					$nid--;

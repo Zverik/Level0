@@ -51,11 +51,12 @@ function l0l_to_data( $str ) {
 	$data = array();
 	$cur = false;
 	$ln = 0;
+	$found_changeset = false;
 	foreach( $lines as $line ) {
 		$ln++;
 		if( !strlen(trim($line)) || substr($line, 0, 1) == '#' )
 			continue;
-		if( preg_match('/^(!)?(-)?(node|way|relation)(?:\\s+(-?[0-9]+)(?:\\.([0-9]+))?)?(?:\\s*:\\s*(-?\\d{1,2}(?:\.\\d+)?)\\s*,\\s*(-?\\d{1,3}(?:\\.\\d+)?))?\\s*(?:#.*)?$/', $line, $m) ) {
+		if( preg_match('/^(!)?(-)?(node|way|relation|changeset)(?:\\s+(-?[0-9]+)(?:\\.([0-9]+))?)?(?:\\s*:\\s*(-?\\d{1,2}(?:\.\\d+)?)\\s*,\\s*(-?\\d{1,3}(?:\\.\\d+)?))?\\s*(?:#.*)?$/', $line, $m) ) {
 			if( $cur ) {
 				validate_entity($cur, $ln - 1);
 				$data[] = $cur;
@@ -68,6 +69,12 @@ function l0l_to_data( $str ) {
 					$cur['action'] = 'delete';
 				else
 					$validation[] = array(true, $ln, _('Deleting an unsaved object'));
+			}
+			if( $cur['type'] == 'changeset' && $cur['id'] <= 0 ) {
+				if( $found_changeset )
+					$validation[] = array(true, $ln, _('There can be only one changeset metadata'));
+				else
+					$found_changeset = true;
 			}
 			if( count($m) > 5 && strlen($m[5]) > 0 )
 				$cur['version'] = $m[5];
