@@ -312,7 +312,11 @@ function url_to_api( $url ) {
 		return OSM_API_URL.$m[1].'/download';
 
 	# Overpass API
-	if( preg_match('!(?:overpass\.osm\.rambler\.ru/cgi|overpass-api\.de/api|api\.openstreetmap\.fr/oapi)/interpreter\?data=.+$!', $url, $m) )
+	$overpass_re = str_replace('.', '\\.', implode('|', array(
+		'overpass.osm.rambler.ru/cgi', 'overpass-api.de/api', 'api.openstreetmap.fr/oapi',
+		'overpass.openstreetmap.ie/api'
+	)));
+	if( preg_match('!(?:'.$overpass_re.')/interpreter\?data=.+$!', $url, $m) )
 		return 'http://'.$m[0];
 
 	# List of objects
