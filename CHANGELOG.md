@@ -4,6 +4,8 @@
 
 * Removed "follow cursor" and "text2coord" buttons.
 * Added support for obsolete `/browse` osm.org links.
+* Changeset number is now a link. [#14](https://github.com/Zverik/Level0/issues/14)
+* Made messages a bit smaller.
 
 ## 1.1, 20.05.2014
 

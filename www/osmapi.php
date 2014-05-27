@@ -94,7 +94,9 @@ function oauth_upload( $comment, $data ) {
 
 		$stage = 'close';
 		$oauth->fetch(OSM_API_URL.'changeset/'.$changeset.'/close', array(), OAUTH_HTTP_METHOD_PUT);
-		$messages[] = sprintf(_('Changeset %d was uploaded successfully.'), $changeset);
+		$chlink = '<a href="https://www.openstreetmap.org/changeset/'.$changeset.'">'.$changeset.'</a>';
+		// todo: replace %d with %s and $chlink, removing str_replace
+		$messages[] = '!'.str_replace($changeset, $chlink, sprintf(_('Changeset %d was uploaded successfully.'), $changeset));
 		return true;
 	} catch(OAuthException $E) {
 		if( $stage == 'upload' && $E->getCode() == 409 ) {

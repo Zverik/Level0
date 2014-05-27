@@ -13,12 +13,12 @@
 <?php if( $error ): ?>
 <p style="color: red;"><?=htmlspecialchars($error) ?></p>
 <?php endif ?>
-<p><?php
+<p style="font-size: 10pt;"><?php
 if( count($messages) > 10 ) {
 	$cnt6 = count($messages) - 8;
 	array_splice($messages, 4, $cnt6, sprintf(ngettext('...(%d message skipped)...', '...(%d messages skipped)...', $cnt6), $cnt6));
 }
-foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
+foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message, 0, 1) == '!' ? substr($message, 1) : htmlspecialchars($message)).'<br>'; }
 ?></p>
 
 <form action="<?=$php_self ?>" method="post" name="f" enctype="multipart/form-data">
