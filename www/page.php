@@ -50,11 +50,10 @@ foreach( $messages as $message ) { echo htmlspecialchars($message).'<br>'; }
 
 <div style="float: right; width: 350px;">
 <input type="hidden" name="center" value="<?=implode(',', $center) ?>">
-<div><input type="button" id="text2coord" disabled="disabled" value="→"><input type="button" id="coord2text" disabled="disabled" value="←">
+<div><input type="button" id="coord2text" disabled="disabled" value="←">
 <input type="text" style="width: 200px;" id="coords"></div>
 <div id="map" style="width: 350px; height: 400px; margin: 1em 0;"></div>
 <div><input type="button" id="downarea" disabled="disabled" value="<?=_('Edit this area') ?>"></div>
-<div><input type="checkbox" id="follow" name="followcur" disabled="disabled" <?=isset($_REQUEST['followcur']) || !isset($_REQUEST['center']) ? 'checked' : '' ?>><label for="follow">&nbsp;<?=_('Follow cursor') ?></label></div>
 </div>
 
 <div style="margin-right: 370px;"><textarea name="data" style="width: 100%; height: 500px; font-family: monospace;"><?php echo htmlspecialchars($text) ?></textarea></div>
@@ -204,9 +203,6 @@ if( 'selectionStart' in textarea ) {
 		}
 	}
 
-	document.getElementById('text2coord').disabled = false;
-	document.getElementById('text2coord').onclick = text2coord;
-
 	document.getElementById('coord2text').disabled = false;
 	document.getElementById('coord2text').onclick = function() {
 		ways.clearLayers();
@@ -246,15 +242,8 @@ if( 'selectionStart' in textarea ) {
 		}
 	};
 
-	document.getElementById('follow').disabled = false;
-	L.DomEvent.on(textarea, 'click', function() {
-		if( document.getElementById('follow').checked )
-			text2coord();
-	});
-	L.DomEvent.on(textarea, 'keyup', function() {
-		if( document.getElementById('follow').checked )
-			text2coord();
-	});
+	L.DomEvent.on(textarea, 'click', text2coord);
+	L.DomEvent.on(textarea, 'keyup', text2coord);
 }
 -->
 </script>

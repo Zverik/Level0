@@ -306,9 +306,9 @@ function url_to_api( $url ) {
 		return OSM_API_URL.$m[1];
 	if( preg_match('#/api/0.6/(map\?bbox=.*)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
-	if( preg_match('!\.org/((?:node|way|relation)/\\d+)(?:/[a-z]+)?(?:#.*)?$!', $url, $m) )
-		return OSM_API_URL.$m[1];
-	if( preg_match('!\.org/(changeset/\\d+)(?:#.*)?$!', $url, $m) )
+	if( preg_match('!\.org/(?:browse/)?((node|way|relation)/\\d+)(?:/[a-z]+)?(?:#.*)?$!', $url, $m) )
+		return OSM_API_URL.$m[1].($m[2] == 'way' ? '/full' : '');
+	if( preg_match('!\.org/(?:browse/)?(changeset/\\d+)(?:#.*)?$!', $url, $m) )
 		return OSM_API_URL.$m[1].'/download';
 
 	# Overpass API

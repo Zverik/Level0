@@ -1,5 +1,10 @@
 # Level0 Change History
 
+## 1.2, *master*
+
+* Removed "follow cursor" and "text2coord" buttons.
+* Added support for obsolete `/browse` osm.org links.
+
 ## 1.1, 20.05.2014
 
 * Fixed parsing object links with hashes from osm.org. [#4](https://github.com/Zverik/Level0/issues/4)
