@@ -43,7 +43,7 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 <input type="submit" name="check" value="<?=_('Check for conflicts') ?>">
 <input type="submit" name="showosc" value="<?=_('Show osmChange') ?>">
 <?php if( $loggedin ): ?>
-<br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60">
+<br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60" maxlength="255" value="<?php if(isset($_REQUEST['comment'])) echo $_REQUEST['comment']; ?>">
 <input type="submit" name="upload" value="<?=_('Upload to OSM') ?>">
 <?php endif ?>
 </p>
