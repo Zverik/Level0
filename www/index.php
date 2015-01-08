@@ -147,6 +147,7 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 			clear_data();
 			$text = '';
 			$validation = array();
+			$_REQUEST['comment'] = '';
 		}
 		$loggedin = isset($_SESSION['osm_token']);
 	}
