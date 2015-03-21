@@ -43,7 +43,7 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 <input type="submit" name="check" value="<?=_('Check for conflicts') ?>">
 <input type="submit" name="showosc" value="<?=_('Show osmChange') ?>">
 <?php if( $loggedin ): ?>
-<br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60" maxlength="255" value="<?php if(isset($_REQUEST['comment'])) echo $_REQUEST['comment']; ?>">
+<br><?=_('Changeset comment') ?>: <input type="text" name="comment" size="60" maxlength="255" value="<?php if(isset($_REQUEST['comment'])) echo htmlspecialchars($_REQUEST['comment']); ?>">
 <input type="submit" name="upload" value="<?=_('Upload to OSM') ?>">
 <?php endif ?>
 </p>
@@ -92,6 +92,16 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 //<!--
 if( document.getElementById('osmchange') )
 	document.getElementById('osmchange').scrollIntoView();
+
+if( 'comment' in document.forms['f'].elements ) {
+	L.DomEvent.on(document.forms['f'].elements['comment'], 'keypress', function(e) {
+		if( (e.which && e.which == 13) || (e.keyCode && e.keyCode == 13) ) {
+			document.forms['f'].elements['upload'].click();
+			return false;
+		}
+		return true;
+	});
+}
 
 var map = L.map('map').setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
 L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
