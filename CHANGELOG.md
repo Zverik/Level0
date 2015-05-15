@@ -6,6 +6,9 @@
 * Added support for obsolete `/browse` osm.org links.
 * Changeset number is now a link. [#14](https://github.com/Zverik/Level0/issues/14)
 * Made messages a bit smaller.
+* Changeset comment is preserved when using other buttons. [#18](https://github.com/Zverik/Level0/pull/18) (by @jgpacker)
+* Pressing "Enter" in the changeset comment field now uploads changes. [#20](https://github.com/Zverik/Level0/issues/20)
+* Fixed deletion and addition of relation members. [#22](https://github.com/Zverik/Level0/issues/22)
 
 ## 1.1, 20.05.2014
 

@@ -272,6 +272,8 @@ function is_modified( $obj ) {
 		if( $obj['nodes'] != $base['nodes'] )
 			return true;
 	} elseif( $obj['type'] == 'relation' ) {
+		if( count($obj['members']) != count($base['members']) )
+			return true;
 		for( $i = 0; $i < count($obj['members']); $i++ )
 			if( $obj['members'][$i]['type'] != $base['members'][$i]['type'] || $obj['members'][$i]['id'] != $base['members'][$i]['id'] || $obj['members'][$i]['role'] != $base['members'][$i]['role'] )
 				return true;
