@@ -147,7 +147,8 @@ document.getElementById('downarea').onclick = function() {
 var textarea = document.forms['f'].elements['data'],
 	headerRE = /^!?-?(node|way|relation)(?:\s+(-?\d+))?(?:\.\d+)?(?:\s*:\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?))?\s*(?:#.*)?$/,
 	nodeSetRE = /^(!?-?node(?:\s+(-?\d+))?\s*)(\s*:\s*)?(-?\d{1,2}(?:\.\d+)?\s*,\s*-?\d{1,3}(?:\.\d+)?)?(\s*#.*)?\s*$/,
-	ndRE = /^\s*nd\s+(-?\d+)\s*$/;
+	ndRE = /^\s*nd\s+(-?\d+)\s*$/,
+	memberRE = /^\s*(nd|wy|rel)\s+(-?\d+)/;
 
 function findNodeCoords( lines, id ) {
 	var i, m, re = /^!?-?node\s+(-?\d+)(?:\.\d+)?\s*:\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*(?:#.*)?$/;
@@ -160,27 +161,31 @@ function findNodeCoords( lines, id ) {
 }
 
 if( 'selectionStart' in textarea ) {
-	function text2coord() {
-		ways.clearLayers();
+	function text2coord(event, memberObjectRow) {
+		if( !memberObjectRow ) ways.clearLayers();
 		var lines = textarea.value.split('\n'),
+			row;
+		if( !memberObjectRow )
 			row = textarea.value.substr(0, textarea.selectionStart).split('\n').length - 1;
+		else
+			row = memberObjectRow;
+
 		if( row < lines.length ) {
 			var headerRow = row;
 			while( headerRow >= 0 && !headerRE.test(lines[headerRow]) )
 				headerRow--;
+			if( row === headerRow ) row++;
 			if( headerRow >= 0 ) {
 				var header = headerRE.exec(lines[headerRow]);
 				if( header[1] == 'node' ) {
 					if( header[3] !== '' && header[4] !== '' )
 						setCenter([+header[3], +header[4]]);
 				} else if( header[1] == 'way' ) {
-					var nodeRow = row, nd;
+					var nodeRow = row, nd = null;
 					while( nodeRow < lines.length && !headerRE.test(lines[nodeRow]) ) {
 						nd = ndRE.exec(lines[nodeRow]);
 						if( nd !== null )
 							break;
-						else
-							nd = null;
 						nodeRow++;
 					}
 					if( nd !== null ) {
@@ -208,6 +213,25 @@ if( 'selectionStart' in textarea ) {
 								ways.addLayer(L.polyline(nodes));
 						}
 					}
+				} else if( header[1] == 'relation' ) {
+					var memberRow = headerRow+1, member = null;
+					for( ; memberRow < lines.length && !headerRE.test(lines[memberRow]) ; memberRow++ ) {
+						member = memberRE.exec(lines[memberRow]);
+						if( member === null ) continue;
+						if( member[1] === 'nd' ) {
+							var coords = findNodeCoords(lines, member[2]);
+							if( coords ) {
+								ways.addLayer(L.marker(coords));
+							}
+						} else if( member[1] === 'wy' ) {
+							var memberHeaderRow = textarea.value.substr(0, textarea.value.search(new RegExp('^!?-?way\\s+' + member[2], 'm'))).split('\n').length - 1;
+							text2coord(event, memberHeaderRow);
+						} else {
+							// nested relations –> ??
+						}
+					}
+					// hack: hide way-node marker by placing it somewhere far away
+					marker.setLatLng([0, -999]);
 				}
 			}
 		}
