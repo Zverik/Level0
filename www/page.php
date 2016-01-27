@@ -162,10 +162,10 @@ function findNodeCoords( lines, id ) {
 
 if( 'selectionStart' in textarea ) {
 	function text2coord(event, memberObjectRow) {
-		if( !memberObjectRow ) ways.clearLayers();
+		if( memberObjectRow === undefined ) ways.clearLayers();
 		var lines = textarea.value.split('\n'),
 			row;
-		if( !memberObjectRow )
+		if( memberObjectRow === undefined )
 			row = textarea.value.substr(0, textarea.selectionStart).split('\n').length - 1;
 		else
 			row = memberObjectRow;
