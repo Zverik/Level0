@@ -161,14 +161,11 @@ function findNodeCoords( lines, id ) {
 }
 
 if( 'selectionStart' in textarea ) {
-	function text2coord(event, memberObjectRow) {
-		if( !memberObjectRow ) ways.clearLayers();
+	function text2coord(event, memberObjectRow, highlight) {
+		if( memberObjectRow === undefined ) ways.clearLayers();
 		var lines = textarea.value.split('\n'),
-			row;
-		if( !memberObjectRow )
-			row = textarea.value.substr(0, textarea.selectionStart).split('\n').length - 1;
-		else
-			row = memberObjectRow;
+			selectionRow = textarea.value.substr(0, textarea.selectionStart).split('\n').length - 1,
+			row = memberObjectRow === undefined ? selectionRow : memberObjectRow;
 
 		if( row < lines.length ) {
 			var headerRow = row;
@@ -192,7 +189,8 @@ if( 'selectionStart' in textarea ) {
 						// find relevant node coords and put marker
 						var coords = findNodeCoords(lines, nd[1]);
 						if( coords ) {
-							setCenter(coords);
+							if( highlight !== false )
+								setCenter(coords);
 							// build array of nodes and draw line
 							var wayRow = headerRow + 1, nodes = [];
 							while( wayRow < lines.length && !headerRE.test(lines[wayRow]) ) {
@@ -210,7 +208,7 @@ if( 'selectionStart' in textarea ) {
 								}
 							}
 							if( nodes.length >= 2 )
-								ways.addLayer(L.polyline(nodes));
+								ways.addLayer(L.polyline(nodes, { color: highlight ? '#f30' : '#03f' }));
 						}
 					}
 				} else if( header[1] == 'relation' ) {
@@ -221,11 +219,17 @@ if( 'selectionStart' in textarea ) {
 						if( member[1] === 'nd' ) {
 							var coords = findNodeCoords(lines, member[2]);
 							if( coords ) {
-								ways.addLayer(L.marker(coords));
+								var nodeMemberMarker = L.marker(coords);
+								ways.addLayer(nodeMemberMarker);
+								if( selectionRow === memberRow ) {
+									setCenter(coords);
+									nodeMemberMarker._icon.style.filter = "hue-rotate(180deg)";
+									nodeMemberMarker._icon.style.webkitFilter = "hue-rotate(180deg)";
+								}
 							}
 						} else if( member[1] === 'wy' ) {
 							var memberHeaderRow = textarea.value.substr(0, textarea.value.search(new RegExp('^!?-?way\\s+' + member[2], 'm'))).split('\n').length - 1;
-							text2coord(event, memberHeaderRow);
+							text2coord(event, memberHeaderRow, selectionRow === memberRow);
 						} else {
 							// nested relations –> ??
 						}
