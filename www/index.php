@@ -4,12 +4,14 @@ require('osmapi.php');
 require('core.php');
 
 // Constants and session management
-const GENERATOR = 'Level0 v1.1';
+const GENERATOR = 'Level0 v1.2';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
-ini_set('session.gc_maxlifetime', 7776000);
-ini_set('session.cookie_lifetime', 7776000);
-session_set_cookie_params(7776000);
+$session_lifetime = 365 * 24 * 3600; // a year
+ini_set('session.gc_maxlifetime', $session_lifetime);
+ini_set('session.cookie_lifetime', $session_lifetime);
+ini_set('session.use_only_cookies', true);
+session_set_cookie_params($session_lifetime);
 session_start();
 
 // Determine the locale
@@ -25,7 +27,7 @@ $locale = preg_replace('/^([a-z]{2})-([A-Z]+)/', '$1_$2', $locale);
 $locale[] = 'en_US';
 
 // Expand two-letter locales to fully specified
-$default_locales = array('en_US', 'ru_RU', 'de_DE', 'ja_JP', 'it_IT', 'hr_HR', 'fr_FR', 'uk_UA', 'vi_VN', 'nl_NL');
+$default_locales = array('en_US', 'ru_RU', 'de_DE', 'es_ES', 'ja_JP', 'it_IT', 'hr_HR', 'fr_FR', 'uk_UA', 'vi_VN', 'nl_NL', 'pl_PL');
 $loclist = array();
 foreach( $default_locales as $dl )
 	$loclist[] = '/^'.substr($dl, 0, 2).'$/';
