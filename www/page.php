@@ -4,8 +4,8 @@
 <title><?=_('Level0 OpenStreetMap Editor') ?></title>
 <meta charset="utf-8">
 <meta name="generator" content="<?=GENERATOR ?>">
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet-src.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 <style>body { font-family: sans-serif; font-size: 11pt; }</style>
 </head>
 <body>
@@ -103,7 +103,41 @@ if( 'comment' in document.forms['f'].elements ) {
 	});
 }
 
-var map = L.map('map').setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
+// Copy-pasted from https://github.com/makinacorpus/Leaflet.RestoreView (MIT license)
+var RestoreViewMixin = {
+    restoreView: function () {
+        var storage = window.localStorage || {};
+        if (!this.__initRestore) {
+            this.on('moveend', function (e) {
+                if (!this._loaded)
+                    return;  // Never access map bounds if view is not set.
+
+                var view = {
+                    lat: this.getCenter().lat,
+                    lng: this.getCenter().lng,
+                    zoom: this.getZoom()
+                };
+                storage['mapView'] = JSON.stringify(view);
+            }, this);
+            this.__initRestore = true;
+        }
+
+        var view = storage['mapView'];
+        try {
+            view = JSON.parse(view || '');
+            this.setView(L.latLng(view.lat, view.lng), view.zoom, true);
+            return true;
+        }
+        catch (err) {
+            return false;
+        }
+    }
+};
+L.Map.include(RestoreViewMixin);
+
+var map = L.map('map');
+<?php if( !$center_r ) { ?>if( !map.restoreView() )<?php } ?>
+map.setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
 L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
 	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>' }).addTo(map);
 var marker = L.marker(map.getCenter(), { draggable: true }).addTo(map);
