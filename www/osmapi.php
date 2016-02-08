@@ -316,7 +316,7 @@ function url_to_api( $url ) {
 	# Overpass API
 	$overpass_re = str_replace('.', '\\.', implode('|', array(
 		'overpass.osm.rambler.ru/cgi', 'overpass-api.de/api', 'api.openstreetmap.fr/oapi',
-		'overpass.openstreetmap.ie/api'
+		'overpass.openstreetmap.ie/api', 'dev.overpass-api.de/[a-z0-9_]+'
 	)));
 	if( preg_match('!(?:'.$overpass_re.')/interpreter\?data=.+$!', $url, $m) )
 		return 'http://'.$m[0];
