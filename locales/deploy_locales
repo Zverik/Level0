@@ -1,5 +1,6 @@
 #!/bin/sh
 LEVEL0_DOCROOT=../www
+source "$(dirname "$0")/transifex_config"
 
 for lang in *.mo
 do
