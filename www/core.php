@@ -281,10 +281,27 @@ function is_modified( $obj ) {
 	return false;
 }
 
+// The lesser is the result, the higher in the osmChange is the object
+function grade_for_export($obj) {
+		// 0 = node, 1 = way, 2 = relation
+		$grade = $obj['type'] == 'node' ? 0 : ($obj['type'] == 'way' ? 1 : 2);
+		if( isset($obj['action']) ) {
+				// reverse deletion order
+				if( $obj['action'] == 'delete' )
+						$grade = 2 - $grade;
+				// first, created objects, then modified (so deleted refs are deleted), then deleted
+				if( $obj['action'] == 'modify' )
+						$grade += 10;
+				elseif( $obj['action'] == 'delete' )
+						$grade += 20;
+		}
+		return $grade;
+}
+
 // a function for sorting data for exporting
 function export_cmp($a, $b) {
-	$typea = $a['type'] == 'node' ? 0 : ($a['type'] == 'way' ? 1 : 2);
-	$typeb = $b['type'] == 'node' ? 0 : ($b['type'] == 'way' ? 1 : 2);
+	$typea = grade_for_export($a);
+	$typeb = grade_for_export($b);
 	if( $typea < $typeb ) return -1;
 	if( $typea > $typeb ) return 1;
 	$idd = $a['id'] - $b['id'];
