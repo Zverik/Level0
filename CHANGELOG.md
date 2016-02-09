@@ -8,10 +8,9 @@
 * Made messages a bit smaller.
 * Changeset comment is preserved when using other buttons. [#18](https://github.com/Zverik/Level0/pull/18) (by @jgpacker)
 * Pressing "Enter" in the changeset comment field now uploads changes. [#20](https://github.com/Zverik/Level0/issues/20)
-* Fixed deletion and addition of relation members. [#22](https://github.com/Zverik/Level0/issues/22)
-* Changeset comment is preserved with user makes more changes (thanks @jgpacker). [#17](https://github.com/Zverik/Level0/issues/17)
-* Fixed deletion order, so no conflict occurs. [#27](https://github.com/Zverik/Level0/issues/27)
-* Relations are visualized, with referenced members highlighed (thanks @tyrasd). [#15](https://github.com/Zverik/Level0/issues/15)
+* Deletion and addition of relation members did not register as changes. [#22](https://github.com/Zverik/Level0/issues/22)
+* Fixed deletion order, so no conflicts occur. [#27](https://github.com/Zverik/Level0/issues/27)
+* Relations are visualized, with referenced members highlighed. [#15](https://github.com/Zverik/Level0/issues/15)  (by @tyrasd)
 * Map state is kept between sessions. [#16](https://github.com/Zverik/Level0/issues/16)
 
 ## 1.1, 20.05.2014
