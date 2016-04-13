@@ -245,7 +245,7 @@ if( 'selectionStart' in textarea ) {
 								ways.addLayer(L.polyline(nodes, { color: highlight ? '#f30' : '#03f' }));
 						}
 					}
-				} else if( header[1] == 'relation' ) {
+				} /*else if( header[1] == 'relation' ) {
 					var memberRow = headerRow+1, member = null;
 					for( ; memberRow < lines.length && !headerRE.test(lines[memberRow]) ; memberRow++ ) {
 						member = memberRE.exec(lines[memberRow]);
@@ -270,7 +270,7 @@ if( 'selectionStart' in textarea ) {
 					}
 					// hack: hide way-node marker by placing it somewhere far away
 					marker.setLatLng([0, -999]);
-				}
+                               } */
 			}
 		}
 	}
