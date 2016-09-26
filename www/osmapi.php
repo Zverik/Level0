@@ -376,7 +376,7 @@ function url_to_api( $url ) {
 }
 
 function create_osc( $data, $changeset = false ) {
-	$now = gmdate(DATE_ISO8601);
+	$now = gmdate(DATE_ATOM);
 	$osc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<osmChange version=\"0.6\" generator=\"".GENERATOR."\">\n";
 	$lastmode = '';
 	foreach( $data as $obj ) {
@@ -413,7 +413,7 @@ function create_osc( $data, $changeset = false ) {
 }
 
 function create_osm( $data ) {
-	$now = gmdate(DATE_ISO8601);
+	$now = gmdate(DATE_ATOM);
 	$osm = "<?xml version='1.0' encoding='UTF-8'?>\n<osm version='0.6' upload='true' generator='".GENERATOR."'>\n";
 	foreach( $data as $obj ) {
 		if( $obj['type'] == 'changeset' )
