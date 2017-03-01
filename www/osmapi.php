@@ -434,7 +434,7 @@ function create_osm( $data ) {
 				$osm .= "    <member type='".$member['type']."' ref='".$member['id']."' role='".$member['role']."' />\n";
 		}
 		foreach( $obj['tags'] as $k => $v ) {
-			$osm .= '    <tag k=\''.htmlspecialchars($k)."' v='".htmlspecialchars($v)."' />\n";
+			$osm .= '    <tag k=\''.htmlspecialchars($k, ENT_QUOTES)."' v='".htmlspecialchars($v, ENT_QUOTES)."' />\n";
 		}
 		$osm .= '  </'.$obj['type'].">\n";
 	}
