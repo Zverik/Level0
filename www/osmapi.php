@@ -423,7 +423,7 @@ function create_osm( $data ) {
 			$osm .= " lat='".$obj['lat']."' lon='".$obj['lon']."'";
 		foreach( array('user', 'uid', 'changeset', 'action') as $k )
 			if( isset($obj[$k]) )
-				$osm .= " $k='".$obj[$k]."'";
+				$osm .= " $k='".htmlspecialchars($obj[$k], ENT_QUOTES)."'";
 		$osm .= " timestamp='".(isset($obj['timestamp']) ? $obj['timestamp'] : $now)."'";
 		$osm .= ">\n";
 		if( $obj['type'] == 'way' ) {
