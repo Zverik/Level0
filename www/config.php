@@ -17,6 +17,7 @@ const BBOX_RADIUS	= 0.0003; // for downloading around a point
 const MAX_REQUEST_OBJECTS = 500;
 const DATA_DIR = 'data';
 const TEXT_DOMAIN = 'messages';
+const CONSOLE_DB = 'console.db'; // Where to store tokens for the console
 
 const DEBUG = false;
 

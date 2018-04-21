@@ -1,5 +1,10 @@
 # Level0 Change History
 
+## master
+
+* Add `console_auth.php` for interacting with [pyLevel0](https://github.com/Zverik/pyLevel0).
+* Fixed user names with quotes.
+
 ## 1.2, 9.02.2016
 
 * Removed "follow cursor" and "text2coord" buttons.
