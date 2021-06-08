@@ -128,7 +128,7 @@ function create_changeset( $data, $comment ) {
 
 	$change_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<osm>\n  <changeset>\n";
 	foreach( $chdata['tags'] as $k => $v ) {
-		$change_data .= '    <tag k=\''.htmlspecialchars($k, ENT_QUOTES)."' v='".htmlspecialchars($v, ENT_QUOTES)."' />\n";
+		if (trim($v) != "") $change_data .= '    <tag k=\''.htmlspecialchars($k, ENT_QUOTES)."' v='".htmlspecialchars($v, ENT_QUOTES)."' />\n";
 	}
 	$change_data .= "  </changeset>\n</osm>";
 	return $change_data;
