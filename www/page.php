@@ -139,7 +139,7 @@ var map = L.map('map');
 <?php if( !$center_r ) { ?>if( !map.restoreView() )<?php } ?>
 map.setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
 L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
-	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>' }).addTo(map);
+	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>' }).addTo(map);
 var marker = L.marker(map.getCenter(), { draggable: true }).addTo(map);
 var ways = L.layerGroup().addTo(map);
 
