@@ -66,7 +66,7 @@ function oauth_callback() {
 function oauth_upload( $comment, $data ) {
 	global $messages, $error;
 	if( !isset($_SESSION['osm_token']) || !isset($_SESSION['osm_secret']) ) {
-		$error = _('OAuth token was lost, please relogin.');
+		$error = _('OAuth token was lost, please log in again.');
 		oauth_logout();
 		return false;
 	}

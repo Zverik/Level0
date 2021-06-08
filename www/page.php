@@ -64,10 +64,10 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 <p style="margin: 0; color: <?=$v[0] ? 'red' : 'blue' ?>"><?=sprintf(_('Line %d'), $v[1]) ?>: <?=htmlspecialchars($v[2]) ?></p>
 <?php endforeach ?>
 
-<p><?=_('Useful links: <a href="http://wiki.openstreetmap.org/wiki/Level0">about this editor</a>, '.
-'<a href="http://wiki.openstreetmap.org/wiki/Level0L">language reference</a>, '.
-'<a href="http://wiki.openstreetmap.org/wiki/Map_Features">tag reference</a>, '.
-'<a href="http://taginfo.openstreetmap.org/">tag statistics</a>.') ?></p>
+<p><?=_('Useful links: <a href="https://wiki.openstreetmap.org/wiki/Level0">about this editor</a>, '.
+'<a href="https://wiki.openstreetmap.org/wiki/Level0L">language reference</a>, '.
+'<a href="https://wiki.openstreetmap.org/wiki/Map_Features">tag reference</a>, '.
+'<a href="https://taginfo.openstreetmap.org/">tag statistics</a>.') ?></p>
 
 <?php if( strlen($osccontent) > 0 ): ?>
 <h2 id="osmchange"><?=_('OsmChange contents (this will be uploaded to the server)') ?></h2>
@@ -138,8 +138,8 @@ L.Map.include(RestoreViewMixin);
 var map = L.map('map');
 <?php if( !$center_r ) { ?>if( !map.restoreView() )<?php } ?>
 map.setView([<?=implode(', ', $center) ?>], <?=$zoom ?>);
-L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png',
-	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>' }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+	{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>' }).addTo(map);
 var marker = L.marker(map.getCenter(), { draggable: true }).addTo(map);
 var ways = L.layerGroup().addTo(map);
 
