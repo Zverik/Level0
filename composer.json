@@ -1,0 +1,9 @@
+{
+    "name": "zverik/level0",
+    "description": "Web-based OpenStreetMap Editor",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^11.2"
+    },
+    "license": "WTFPL"
+}

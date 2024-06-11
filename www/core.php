@@ -32,6 +32,8 @@ function store_base() {
 	global $basedata;
 	$filename = get_cache_filename('base');
 	if( $basedata && count($basedata) > 0 ) {
+		if (!is_dir(dirname($filename)))
+			mkdir(dirname($filename));
 		@file_put_contents($filename, serialize($basedata));
 	} else {
 		// delete base

@@ -1,3 +1,5 @@
 www/data/
 www/locale/
 locales/transifex_config
+
+/vendor/

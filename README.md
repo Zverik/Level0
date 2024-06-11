@@ -22,6 +22,10 @@ Oh, one more thing: there will be a lot of `.base` files in the data directory. 
 
 Localization strings are managed with [Transifex](https://www.transifex.com/projects/p/level0/). There are not many of them, please add a translation for your language when you have time.
 
+## Development
+
+Run tests using `phpunit --display-warnings test/`
+
 ## License and authors
 
 Level0 is written by Ilya Zverev and published under WTFPL license.
