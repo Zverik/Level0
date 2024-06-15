@@ -67,7 +67,7 @@ parse_text($text);
 // Now process actions
 if( $action == 'login' || isset($_REQUEST['login']) ) {
 	if( $loggedin )
-		$error = _('Yor are already logged in.');
+		$error = _('You are already logged in.');
 	else {
 		if( count($userdata) || count($basedata) ) {
 			$_SESSION['l0id'] = $l0id;
