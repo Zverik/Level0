@@ -2,8 +2,10 @@
 
 ## master
 
-* Add `console_auth.php` for interacting with [pyLevel0](https://github.com/Zverik/pyLevel0).
 * Fixed user names with quotes.
+* OAuth2 support.
+* Data is now stored in a SQLite database instead of files.
+* Unit tests (thanks @mtmail).
 
 ## 1.2, 9.02.2016
 

@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	var map = L.map('map');
 	if (init_l0_map.force || !map.restoreView()) {
-		map.setView(init_l0_map.center.split(', '), init_l0_map.zoom);
+		map.setView(init_l0_map.center, init_l0_map.zoom);
 	}
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',

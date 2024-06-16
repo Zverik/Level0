@@ -1,5 +1,7 @@
 www/data/
 www/locale/
-locales/transifex_config
-
 /vendor/
+locales/transifex_config
+*.db
+www/config.php
+*.swp

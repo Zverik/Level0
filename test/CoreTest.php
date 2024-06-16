@@ -20,22 +20,19 @@ class CoreTest extends TestCase
 			]
 		];
 
-		$filename = get_cache_filename('base');
-
 		global $basedata;
-		clear_data();
-		$this->assertFalse(file_exists($filename));
 
 		$basedata = $testdata;
 		store_base();
-		$this->assertTrue(file_exists($filename));
 
 		$basedata = [];
 		read_base();
 		$this->assertEquals($basedata, $testdata);
 
 		clear_data();
-		$this->assertFalse(file_exists($filename));
+		$this->assertEquals($basedata, []);
+
+		read_base();
 		$this->assertEquals($basedata, []);
 	}
 

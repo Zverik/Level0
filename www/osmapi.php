@@ -1,113 +1,126 @@
 <?php
+function oauth_make() {
+  return new \JBelien\OAuth2\Client\Provider\OpenStreetMap([
+      'clientId'     => CLIENT_ID,
+      'clientSecret' => CLIENT_SECRET,
+      'redirectUri'  => 'http://127.0.0.1/level0/index.php?action=callback',
+      'dev'          => strpos(OSM_API_URL, 'dev.openstreetmap') !== false
+  ]);
+}
 
 function oauth_login() {
-	global $error;
-	try {
-		$oauth = new OAuth(CLIENT_ID,CLIENT_SECRET,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
-		$request_token_info = $oauth->getRequestToken(OSM_OAUTH_URL.'request_token');
-		$_SESSION['secret'] = $request_token_info['oauth_token_secret'];
-		header('Location: '.OSM_OAUTH_URL."authorize?oauth_token=".$request_token_info['oauth_token']);
-		exit;
-	} catch(OAuthException $E) {
-		$error = 'OAuth error '.$E->getCode().': '.$E->getMessage();
-	}
+  $oauth = oauth_make();
+  $options = ['scope' => 'read_prefs write_api'];
+  $auth_url = $oauth->getAuthorizationUrl($options);
+
+  $_SESSION['oauth2state'] = $oauth->getState();
+  header('Location: '.$auth_url);
+  exit;
 }
 
 function oauth_logout() {
 	unset($_SESSION['osm_user']);
 	unset($_SESSION['osm_langs']);
 	unset($_SESSION['osm_token']);
-	unset($_SESSION['osm_secret']);
 }
 
 function oauth_callback() {
 	global $php_self;
 
-	if(!isset($_GET['oauth_token'])) {
-		echo "Error! There is no OAuth token!";
-	} elseif(!isset($_SESSION['secret'])) {
-		echo "Error! There is no OAuth secret!";
+	if(empty($_GET['code'])) {
+		echo "Error: there is no OAuth code.";
+	} elseif(empty($_SESSION['oauth2state'])) {
+		echo "Error: there is no OAuth state.";
+    print_r($_SESSION);
+  } elseif(empty($_GET['state']) || $_GET['state'] != $_SESSION['oauth2state']) {
+    echo "Error: invalid state.";
 	} else {
+    unset($_SESSION['oauth2state']);
 		try {
-			$oauth = new OAuth(CLIENT_ID, CLIENT_SECRET, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
-			$oauth->setToken($_GET['oauth_token'], $_SESSION['secret']);
-			$access_token_info = $oauth->getAccessToken(OSM_OAUTH_URL.'access_token');
-			unset($_SESSION['secret']);
+      $oauth = oauth_make();
+      $accessToken = $oauth->getAccessToken(
+        'authorization_code', ['code' => $_GET['code']]
+      );
+      $_SESSION['osm_token'] = $accessToken;
 
-			$_SESSION['osm_token'] = strval($access_token_info['oauth_token']);
-			$_SESSION['osm_secret'] = strval($access_token_info['oauth_token_secret']);
-			$oauth->setToken($_SESSION['osm_token'], $_SESSION['osm_secret']);
-
-			try {
-				$oauth->fetch(OSM_API_URL.'user/details');
-				$user_details = $oauth->getLastResponse();
-
-				$xml = simplexml_load_string($user_details);       
-				$_SESSION['osm_user'] = strval($xml->user['display_name']);
-
-				$langs = array();
-				foreach( $xml->user->languages->lang as $lang )
-					$langs[] = strval($lang);
-				$_SESSION['osm_langs'] = $langs;
-			} catch(OAuthException $E) {
-				// well, we don't need that
-			}
+      $resourceOwner = $oauth->getResourceOwner($accessToken);
+      $osm_user = $resourceOwner->getDisplayName();
+      $langs = $resourceOwner->getLanguages();
+      $_SESSION['osm_user'] = $osm_user;
+      $_SESSION['osm_langs'] = $langs;
 
 			header("Location: ".$php_self.'?action=remember');
-		} catch(OAuthException $E) {
+    } catch (Exception $e) {
 			echo("<pre>Exception:\n");
-			print_r($E);
+			print_r($e);
 			echo '</pre>';
-		}
+    }
 	}
 	exit;
 }
 
 function oauth_upload( $comment, $data ) {
 	global $messages, $error;
-	if( !isset($_SESSION['osm_token']) || !isset($_SESSION['osm_secret']) ) {
+	if(empty($_SESSION['osm_token'])) {
 		$error = _('OAuth token was lost, please log in again.');
 		oauth_logout();
 		return false;
 	}
+  $token = $_SESSION['osm_token'];
 
 	try {
 		$stage = 'login';
-		$oauth = new OAuth(CLIENT_ID, CLIENT_SECRET, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
-		$oauth->setToken($_SESSION['osm_token'], $_SESSION['osm_secret']);
+    $oauth = oauth_make();
 
-		$change_data = create_changeset($data, $comment);
-		$xml_content = array('Content-Type' => 'application/xml');
 		$stage = 'create';
-		// note: this call works instead of returning 401 because of $xml_content
-		$oauth->fetch(OSM_API_URL.'changeset/create', $change_data, OAUTH_HTTP_METHOD_PUT, $xml_content);
-		if( !preg_match('/\\d+/', $oauth->getLastResponse(), $m) ) {
+		$xml_content = array('Content-Type' => 'application/xml');
+    $ch_header = create_changeset($data, $comment);
+    $response = $oauth->getResponse($oauth->getAuthenticatedRequest(
+      'PUT', OSM_API_URL.'changeset/create', $token,
+      ['body' => $ch_header, 'headers' => $xml_content]
+    ));
+    if ($response->getStatusCode() != 200) {
+      $error = 'Failed to create a changeset: '.$response->getBody();
+      return false;
+    }
+
+    // TODO: update everything from below.
+		if( !preg_match('/\\d+/', $response->getBody(), $m) ) {
 			$error = _('Could not aquire changeset id for a new changeset.');
 			return false;
 		}
 		$changeset = $m[0];
 
-		$osc = create_osc($data, $changeset);
 		$stage = 'upload';
-			$oauth->fetch(OSM_API_URL.'changeset/'.$changeset.'/upload', $osc, OAUTH_HTTP_METHOD_POST, $xml_content);
+		$osc = create_osc($data, $changeset);
+    $response = $oauth->getResponse($oauth->getAuthenticatedRequest(
+      'POST', OSM_API_URL.'changeset/'.$changeset.'/upload', $token,
+      ['body' => $osc, 'headers' => $xml_content]
+    ));
+    if ($response->getStatusCode() == 409) {
+      $error = sprintf(
+        _('Conflict while uploading changeset %d: %s.'),
+        $changeset, $response->getBody());
+
+			// todo: process conflict
+			// http://wiki.openstreetmap.org/wiki/API_0.6#Error_codes_9
+      return false;
+    } else if ($response->getStatusCode() != 200) {
+      $error = 'Failed to create a changeset: '.$response->getBody();
+      return false;
+    }
 		// todo: parse response and renumber created objects?
 
 		$stage = 'close';
-		$oauth->fetch(OSM_API_URL.'changeset/'.$changeset.'/close', array(), OAUTH_HTTP_METHOD_PUT);
+    $oauth->getResponse($oauth->getAuthenticatedRequest(
+      'PUT', OSM_API_URL.'changeset/'.$changeset.'/close', $token));
 		$chlink = '<a href="https://www.openstreetmap.org/changeset/'.$changeset.'" target="_blank">'.$changeset.'</a>';
 		// todo: replace %d with %s and $chlink, removing str_replace
 		$messages[] = '!'.str_replace($changeset, $chlink, sprintf(_('Changeset %d was uploaded successfully.'), $changeset));
 		return true;
-	} catch(OAuthException $E) {
-		if( $stage == 'upload' && $E->getCode() == 409 ) {
-			$error = sprintf(_('Conflict while uploading changeset %d: %s.'), $changeset, $oauth->getLastResponse());
-			// todo: process conflict
-			// http://wiki.openstreetmap.org/wiki/API_0.6#Error_codes_9
-		} else {
-			print_r($E);
-			$msg = $oauth->getLastResponse();
-			$error = sprintf(_('OAuth error %d at stage "%s": %s.'), $E->getCode(), $stage, $msg ? $msg : $E->getMessage());
-		}
+	} catch(Exception $E) {
+    print_r($E);
+    $error = sprintf(_('OAuth error %d at stage "%s": %s.'), $E->getCode(), $stage, $E->getMessage());
 	}
 	return false;
 }

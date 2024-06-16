@@ -2,6 +2,9 @@
     "name": "zverik/level0",
     "description": "Web-based OpenStreetMap Editor",
     "type": "project",
+    "require": {
+      "jbelien/oauth2-openstreetmap": "^0.1.2"
+    },
     "require-dev": {
         "phpunit/phpunit": "^11.2"
     },

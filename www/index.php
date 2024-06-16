@@ -1,18 +1,22 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
 require('config.php');
 require('osmapi.php');
 require('core.php');
 
 // Constants and session management
-const GENERATOR = 'Level0 v1.2';
+const GENERATOR = 'Level0 v1.3';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
+
+// Set session parameters.
 $session_lifetime = 365 * 24 * 3600; // a year
-ini_set('session.gc_maxlifetime', $session_lifetime);
-ini_set('session.cookie_lifetime', $session_lifetime);
-ini_set('session.use_only_cookies', true);
 session_set_cookie_params($session_lifetime);
-session_start();
+session_start([
+  'cookie_lifetime' => $session_lifetime,
+  'use_only_cookies' => true,
+  'use_strict_mode' => true,
+]);
 
 // Determine the locale
 $directory = dirname(__FILE__).'/locale';

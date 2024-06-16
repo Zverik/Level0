@@ -13,50 +13,117 @@ function parse_text( $str ) {
 	$userdata = l0l_to_data($str);
 }
 
-function get_cache_filename( $suffix ) {
-	global $l0id;
-	return DATA_DIR.'/'.$l0id.'.'.$suffix;
+function open_db($readonly) {
+  try {
+    $mode = $readonly ? SQLITE3_OPEN_READONLY : SQLITE3_OPEN_READWRITE;
+    $db = new SQLite3(SQLITE_DB, $mode);
+    error_log('Opened db with mode '.$mode.' (readonly: '.$readonly.')');
+  } catch (Exception) {
+    $db = new SQLite3(SQLITE_DB);
+    $db->exec(
+      "create table if not exists base ".
+      "(l0id integer primary key, content text, ".
+      "created datetime default current_timestamp);");
+    $db->exec(
+      "create table if not exists user ".
+      "(l0id integer primary key, content text, ".
+      "created datetime default current_timestamp);");
+  }
+  $db->exec('PRAGMA journal_mode = wal;');
+  return $db;
 }
 
 function read_base() {
-	global $basedata;
-	$filename = get_cache_filename('base');
-	$data = @file_get_contents($filename);
-	if( $data !== false )
-		$basedata = @unserialize($data);
-	if( !is_array($basedata) )
-		$basedata = array();
+	global $basedata, $l0id, $error;
+  try {
+    $db = open_db(true); // should be true, but the next line invokes the ro error
+    $st = $db->prepare("select content from base where l0id = :id");
+    if (!$st) {
+      $error = 'Failed to prepare sqlite statement';
+      return;
+    }
+    $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+    $result = $st->execute();
+    $row = $result ? $result->fetchArray(SQLITE3_NUM) : null;
+    if ($row) {
+      $basedata = @unserialize($row[0]);
+      if( !is_array($basedata) )
+        $basedata = array();
+    }
+    $db->close();
+  } catch (Exception $e) {
+    // it's okay
+    $error = 'Error reading stored data: '.$e;
+  }
 }
 
 function store_base() {
-	global $basedata;
-	$filename = get_cache_filename('base');
-	if( $basedata && count($basedata) > 0 ) {
-		if (!is_dir(dirname($filename)))
-			mkdir(dirname($filename));
-		@file_put_contents($filename, serialize($basedata));
-	} else {
-		// delete base
-		@unlink($filename);
-	}
+	global $basedata, $l0id, $error;
+  try {
+    $db = open_db(false);
+    if( $basedata && count($basedata) > 0 ) {
+      $st = $db->prepare(
+        "insert into base(l0id, content) values(:id, :cnt) ".
+        "on conflict do update set content = :cnt");
+      $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+      $st->bindValue(':cnt', serialize($basedata), SQLITE3_TEXT);
+      $st->execute();
+      error_log('written '.count($basedata).' objects to db');
+    } else {
+      $st = $db->prepare("delete from base where l0id = :id");
+      $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+      $st->execute();
+      error_log('no data written');
+    }
+    $db->close();
+  } catch (Exception $e) {
+    $error = 'Error storing data: '.$e;
+  }
 }
 
 function read_user() {
-	$filename = get_cache_filename('user');
-	$text = @file_get_contents($filename);
-	@unlink($filename);
-	return $text !== false && strlen($text) > 0 ? $text : '';
+	global $l0id, $error;
+  $text = '';
+  try {
+    $db = open_db(false);
+    $st = $db->prepare("select content from user where l0id = :id");
+    $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+    $result = $st->execute();
+    $row = $result ? $result->fetchArray(SQLITE3_NUM) : null;
+    if ($row) {
+      $text = row[0];
+      $st = $db->prepare("delete from user where l0id = :id");
+      $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+      $st->execute();
+    }
+    $db->close();
+  } catch (Exception $e) {
+    $error = 'Error reading stored user data: '.$e;
+  }
+  return $text;
 }
 
 // saves user data to a cache.
 function store_user( $text ) {
-	$filename = get_cache_filename('user');
-	if( strlen($text) > 0 ) {
-		@file_put_contents($filename, $text);
-	} else {
-		// delete file
-		@unlink($filename);
-	}
+	global $l0id, $error;
+  try {
+    $db = open_db(false);
+    if(strlen($text) > 0) {
+      $st = $db->prepare(
+        "insert into user(l0id, content) values(:id, :cnt) ".
+        "on conflict do update set content = :cnt");
+      $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+      $st->bindValue(':cnt', $text, SQLITE3_TEXT);
+      $st->execute();
+    } else {
+      $st = $db->prepare("delete from user where l0id = :id");
+      $st->bindValue(':id', $l0id, SQLITE3_INTEGER);
+      $st->execute();
+    }
+    $db->close();
+  } catch (Exception $e) {
+    $error = 'Error storing user data: '.$e;
+  }
 }
 
 function clear_data() {
