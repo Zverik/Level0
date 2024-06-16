@@ -6,10 +6,11 @@ This is a text-based in-browser editor for OSM data. See [its wiki page](http://
 
 You will need PHP with `mod_gettext`.
 
-* Copy all files from `www` to a document root directory.
-* Open [this link](http://www.openstreetmap.org/user/username/oauth_clients/new) and register your instance of Level0. It needs permissions for reading user details and modifying the map.
-* Edit `config.php`, inserting both OAuth keys.
-* Create `data` directory and give writing permissions for it to web server process. Check path in `config.php`.
+* Point your `DocumentRoot` to the `www` directory.
+* Run `composer install`.
+* Open [this link](https://www.openstreetmap.org/oauth2/applications/new) and register your instance of Level0. It needs permissions for reading user details and modifying the map.
+* Create `www/config.php` from `www/config.php.sample`, inserting both OAuth keys.
+* Create `data` directory and give writing permissions for it to web server process. Check path in `config.php`. Maybe you'll also need `httpd_sys_rw_content` SELinux tag.
 * Check path to document root in `locales/deploy_locales` and run it.
 
 You're set: download some data in the editor and login to OSM.
