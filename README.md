@@ -30,3 +30,5 @@ Run tests using `phpunit --display-warnings test/`
 ## License and authors
 
 Level0 is written by Ilya Zverev and published under WTFPL license.
+
+Thank you to [OpenCage](https://opencagedata.com/) for sponsoring work on Level0!
