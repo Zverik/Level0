@@ -3,5 +3,6 @@ www/locale/
 /vendor/
 locales/transifex_config
 *.db
+*.db-*
 www/config.php
 *.swp
