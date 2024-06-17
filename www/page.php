@@ -69,7 +69,7 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 '<a href="https://wiki.openstreetmap.org/wiki/Map_Features">tag reference</a>, '.
 '<a href="https://taginfo.openstreetmap.org/">tag statistics</a>.') ?></p>
 
-<p style="font-style: italic;">Thank you to <a href="https://opencagedata.com/">OpenCage</a> for sponsoring work on Level0!</p>
+<p style="font-style: italic;"><?=_('Thank you to <a href="https://opencagedata.com/">OpenCage</a> for sponsoring work on Level0!') ?></p>
 
 <?php if( strlen($osccontent) > 0 ): ?>
 <h2 id="osmchange"><?=_('OsmChange contents (this will be uploaded to the server)') ?></h2>

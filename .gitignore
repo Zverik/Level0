@@ -1,5 +1,5 @@
 www/data/
-www/locale/
+ww/locale/
 /vendor/
 locales/transifex_config
 *.db

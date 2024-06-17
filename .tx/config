@@ -1,0 +1,12 @@
+[main]
+host = https://app.transifex.com
+
+[o:openstreetmap:p:level0:r:messages]
+file_filter            = www/locale/<lang>/LC_MESSAGES/messages.mo
+source_file            = messages.pot
+type                   = PO
+minimum_perc           = 50
+resource_name          = "            Messages          "
+replace_edited_strings = false
+keep_translations      = false
+
