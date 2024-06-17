@@ -1,11 +1,13 @@
 # Level0 Change History
 
-## master
+## 1.3, unreleased
 
 * Fixed user names with quotes.
 * OAuth2 support.
 * Data is now stored in a SQLite database instead of files.
-* Unit tests (thanks @mtmail).
+* Updated Transifex workflow.
+* Unit and UI tests (thanks @mtmail).
+* Updated Leaflet (thanks @mtmail).
 
 ## 1.2, 9.02.2016
 
