@@ -50,13 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 	L.Map.include(RestoreViewMixin);
 
-	var map = L.map('map');
+	var map = L.map('map', { attributionControl: false });
 	if (init_l0_map.force || !map.restoreView()) {
 		map.setView(init_l0_map.center, init_l0_map.zoom);
 	}
 
 	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-		{ attribution: 'Map &copy; <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>' }).addTo(map);
+		{ attribution: 'Map © <a href="https://www.openstreetmap.org">OpenStreetMap contributors</a>' }).addTo(map);
+	L.control.attribution({ prefix: null }).addTo(map);
 	var marker = L.marker(map.getCenter(), { draggable: true }).addTo(map);
 	var ways = L.layerGroup().addTo(map);
 
