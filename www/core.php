@@ -17,6 +17,7 @@ function open_db($readonly) {
   try {
     $mode = $readonly ? SQLITE3_OPEN_READONLY : SQLITE3_OPEN_READWRITE;
     $db = new SQLite3(SQLITE_DB, $mode);
+    $db->busyTimeout(5000);
     error_log('Opened db with mode '.$mode.' (readonly: '.$readonly.')');
   } catch (Exception) {
     $db = new SQLite3(SQLITE_DB);
