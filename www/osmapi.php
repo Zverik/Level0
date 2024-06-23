@@ -1,9 +1,10 @@
 <?php
 function oauth_make() {
+  $redirect = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
   return new \JBelien\OAuth2\Client\Provider\OpenStreetMap([
       'clientId'     => CLIENT_ID,
       'clientSecret' => CLIENT_SECRET,
-      'redirectUri'  => 'http://127.0.0.1/level0/index.php?action=callback',
+      'redirectUri'  => $redirect.'?action=callback',
       'dev'          => strpos(OSM_API_URL, 'dev.openstreetmap') !== false
   ]);
 }
