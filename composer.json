@@ -3,7 +3,11 @@
     "description": "Web-based OpenStreetMap Editor",
     "type": "project",
     "require": {
-        "jbelien/oauth2-openstreetmap": "^0.1.2"
+        "jbelien/oauth2-openstreetmap": "^0.1.2",
+        "php": ">=7.4",
+        "ext-sqlite3": ">=7.4",
+        "ext-xml": ">=7.4",
+        "ext-mbstring": ">=7.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.2",
