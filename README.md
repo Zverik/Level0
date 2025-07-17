@@ -8,12 +8,16 @@ and [language guide](http://wiki.openstreetmap.org/wiki/Level0L).
 
 You will need PHP with `mod_gettext`.
 
-* Point your `DocumentRoot` to the `www` directory.
-* Run `composer install`.
-* Open [this link](https://www.openstreetmap.org/oauth2/applications/new) and register
-  your instance of Level0. It needs permissions for reading user details and modifying the map.
-* Create `www/config.php` from `www/config.php.sample`, inserting both OAuth keys.
-* Create `data` directory and give writing permissions for it to web server process.
+1. Point your `DocumentRoot` to the `www` directory.
+
+2. Run `composer install`.
+
+3. Open [this link](https://www.openstreetmap.org/oauth2/applications/new) and register
+  your instance of Level0. It needs permissions for reading user details and modifying the map. When asked for a redirect URL set `$your_installation/index.php?action=callback` (the public instance uses `https://level0.osmz.ru/index.php?action=callback`)
+
+4. Create `www/config.php` from `www/config.php.sample`, inserting both OAuth keys.
+
+5. Create `data` directory and give writing permissions for it to web server process.
   Check path in `config.php`. Maybe you'll also need `httpd_sys_rw_content` SELinux tag.
 
 You're set: download some data in the editor and login to OSM.
