@@ -16,6 +16,7 @@ class OsmApiTest extends TestCase
 	public function test_url_to_api() {
 		$this->assertFalse(url_to_api(''));
 		$this->assertFalse(url_to_api('abc'));
+		$this->assertFalse(url_to_api(','));
 
 		$this->assertEquals(url_to_api('/api/0.6/node/123'), 'https://api.openstreetmap.org/api/0.6/node/123');
 
@@ -31,6 +32,14 @@ class OsmApiTest extends TestCase
 		);
 
 		$this->assertEquals(url_to_api('15/12.34/56.78'), 'https://api.openstreetmap.org/api/0.6/map?bbox=56.77970,12.33970,56.78030,12.34030');
+
+		$this->assertEquals(
+			url_to_api(',n12,,,n13,'),
+			[
+				'https://api.openstreetmap.org/api/0.6/node/12',
+				'https://api.openstreetmap.org/api/0.6/node/13'
+			]
+		);
 	}
 
 

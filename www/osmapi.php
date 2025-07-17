@@ -315,6 +315,9 @@ function renumber_created( $data, $olddata = false ) {
 // Checks that $url is to OSM API, converts if otherwise
 // Returns false if it cannot be converted
 function url_to_api( $url ) {
+	# Remove all commas from start, end and any duplicate commas
+	$url = trim(preg_replace('/,+/', ',', $url), ',');
+
 	# API calls
 	if( preg_match('#/api/0.6/((?:node|way|relation|changeset)/\\d+(?:/[0-9a-z]+)?)$#', $url, $m) )
 		return OSM_API_URL.$m[1];
