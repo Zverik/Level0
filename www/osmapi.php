@@ -337,6 +337,13 @@ function url_to_api( $url ) {
 	)));
 	if( preg_match('!(?:'.$overpass_re.')/interpreter\?data=.+$!', $url, $m) )
 		return 'http://'.$m[0];
+	# Overpass API
+	$overpass_re_https = str_replace('.', '\\.', implode('|', array(
+		'overpass.private.coffee/api' , 'overpass.osm.jp/api', 'maps.mail.ru/osm/tools/overpass/api'
+	)));
+	if( preg_match('!(?:'.$overpass_re_https.')/interpreter\?data=.+$!', $url, $m) )
+		return 'https://'.$m[0];
+
 
 	# List of objects
 	if( preg_match('#^!?\\s*[a-y]+[/\\s]*[0-9.]+[!*]?(?:\\s*,\\s*[a-y]+[/\\s]*[0-9.]+[!*]?)*$#', $url) ) {

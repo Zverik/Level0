@@ -21,6 +21,9 @@ class OsmApiTest extends TestCase
 		$this->assertEquals(url_to_api('/api/0.6/node/123'), 'https://api.openstreetmap.org/api/0.6/node/123');
 
 		$this->assertEquals(url_to_api('overpass-api.de/api/interpreter?data=a-long-query'), 'http://overpass-api.de/api/interpreter?data=a-long-query');
+		$this->assertEquals(url_to_api('overpass.private.coffee/api/interpreter?data=a-long-query'), 'https://overpass.private.coffee/api/interpreter?data=a-long-query');
+		$this->assertEquals(url_to_api('overpass.osm.jp/api/interpreter?data=a-long-query'), 'https://overpass.osm.jp/api/interpreter?data=a-long-query');
+		$this->assertEquals(url_to_api('maps.mail.ru/osm/tools/overpass/api/interpreter?data=a-long-query'), 'https://maps.mail.ru/osm/tools/overpass/api/interpreter?data=a-long-query');
 
 		$this->assertEquals(
 			url_to_api('n12,w34,r56'),
