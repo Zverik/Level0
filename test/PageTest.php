@@ -99,6 +99,7 @@ class WebPageTest extends TestCase
 
 		// Button "Show osmChange"
 		$this->elementByCSS('input[name="showosc"]')->click();
+		sleep(2);
 		$this->assertStringContainsString('this will be uploaded to the server', $this->webDriver->getPageSource());
 		$this->assertMatchesRegularExpression('/&lt;osmChange [^&]+&gt;\s*&lt;\/osmChange&gt;/', $this->webDriver->getPageSource());
 	}
