@@ -6,6 +6,8 @@ function oauth_make() {
       'clientSecret' => CLIENT_SECRET,
       'redirectUri'  => $redirect.'?action=callback',
       'dev'          => strpos(OSM_API_URL, 'dev.openstreetmap') !== false
+  ], [
+      'httpClient' => new \GuzzleHttp\Client(['headers' => ['User-Agent' => USER_AGENT]])
   ]);
 }
 
@@ -150,6 +152,8 @@ function create_changeset( $data, $comment ) {
 
 function parse_osm_xml( $uri ) {
 	global $messages;
+	$context = stream_context_create(['http' => ['user_agent' => USER_AGENT]]);
+	libxml_set_streams_context($context);
 	$r = new XMLReader();
 	if( !$r->open($uri, 'utf-8') ) {
 		$messages[] = _('Failed to open XML stream');

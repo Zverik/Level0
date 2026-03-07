@@ -6,6 +6,7 @@ require('core.php');
 
 // Constants and session management
 const GENERATOR = 'Level0 v1.3';
+const USER_AGENT = 'Level0/1.3';
 $php_self = htmlentities(substr($_SERVER['PHP_SELF'], 0,  strcspn($_SERVER['PHP_SELF'], "\n\r")), ENT_QUOTES);
 header('Content-type: text/html; charset=utf-8');
 
