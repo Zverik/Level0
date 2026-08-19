@@ -2,8 +2,12 @@
     "name": "zverik/level0",
     "description": "Web-based OpenStreetMap Editor",
     "type": "project",
+    "repositories": [{
+      "type": "vcs",
+      "url": "https://github.com/Zverik/oauth2-openstreetmap"
+    }],
     "require": {
-        "jbelien/oauth2-openstreetmap": "^0.1.2",
+        "jbelien/oauth2-openstreetmap": "remove-double-auth as 0.1.3",
         "php": ">=7.4",
         "ext-sqlite3": ">=7.4",
         "ext-xml": ">=7.4",
