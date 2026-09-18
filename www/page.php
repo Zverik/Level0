@@ -25,12 +25,14 @@ foreach( $messages as $message ) { echo (strlen($message) > 1 && substr($message
 <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
 <input type="hidden" name="l0id" value="<?=$l0id ?>" />
 
+<?php if( $loggedin ): ?>
 <p><?=_('URL or group of IDs like "n54,w33"') ?>: <input type="text" name="url" size="60"><br>
 <?=_('OSM or OSC file') ?>: <input type="file" name="file">
 <input type="submit" name="add" value="<?=_('Add to editor') ?>" style="margin-left: 30px;">
 <input type="submit" name="replace" value="<?=_('Replace data in editor') ?>">
 <input type="submit" name="revert" value="<?=_('Revert changes') ?>">
 <input type="submit" name="clear" value="<?=_('Clear data') ?>"></p>
+<?php endif ?>
 
 <p>
 <?php if( $loggedin ): ?>

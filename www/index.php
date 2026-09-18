@@ -86,6 +86,7 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 	oauth_logout();
 	$loggedin = false;
 } elseif( isset($_REQUEST['add']) || isset($_REQUEST['replace']) || (isset($_REQUEST['url']) && strlen($_REQUEST['url']) > 0) ) {
+  if ( $loggedin ) {
 	if( isset($_FILES['file']) && is_uploaded_file($_FILES['file']['tmp_name']) ) {
 		if( $_FILES['file']['error'] > 0 ) {
 			$errors = array('OK', _('too big'), _('bigger than MAX_FILE_SIZE'), _('partial upload'),
@@ -104,7 +105,11 @@ if( $action == 'login' || isset($_REQUEST['login']) ) {
 	if( isset($url) && $url ) {
 		$validation = array();
 		update_data_array(is_array($url) ? $url : array($url));
-	}
+  }
+  } else {
+    // TODO: keep the url and redirect to download it immediately after signing in.
+			$error = _('Please log in to download data');
+  }
 } elseif( isset($_REQUEST['clear']) ) {
 	clear_data();
 	$text = '';
