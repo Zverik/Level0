@@ -233,7 +233,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: www/page.php:28
-msgid "URL or group of IDs like \"n54,w33\""
+msgid "URL or group of IDs like \"n55667788,w66554433\""
 msgstr ""
 
 #: www/page.php:29
